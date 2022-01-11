@@ -29,6 +29,8 @@ public class RecuitmentNew {
     private String description;
     private int quantity;
     private int gender;
+    @OneToOne
+    private City city;
     @Enumerated(EnumType.STRING)
     @NaturalId
     private Status status;
