@@ -6,15 +6,15 @@ import com.m6findjobbackend.dto.request.SignUpForm;
 import com.m6findjobbackend.dto.response.JwtResponse;
 import com.m6findjobbackend.dto.response.ResponeAccount;
 import com.m6findjobbackend.dto.response.ResponseMessage;
-import com.m6findjobbackend.model.Account;
-import com.m6findjobbackend.model.Role;
-import com.m6findjobbackend.model.RoleName;
-import com.m6findjobbackend.model.Status;
+import com.m6findjobbackend.model.*;
 import com.m6findjobbackend.security.jwt.JwtProvider;
 import com.m6findjobbackend.security.userprincipal.UserDetailServices;
 import com.m6findjobbackend.security.userprincipal.UserPrinciple;
 import com.m6findjobbackend.service.account.AccountService;
+import com.m6findjobbackend.service.company.CompanyService;
+import com.m6findjobbackend.service.company.ICompanyService;
 import com.m6findjobbackend.service.role.RoleService;
+import com.m6findjobbackend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +22,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -45,6 +47,11 @@ public class AuthController {
     JwtProvider jwtProvider;
     @Autowired
     UserDetailServices userDetailService;
+    @Autowired
+    CompanyService companyService;
+
+    @Autowired
+    UserService userService;
 
     @PostMapping("/signup")
     public ResponseEntity<?> register(@Valid @RequestBody SignUpForm signUpForm){
@@ -76,16 +83,29 @@ public class AuthController {
         accountService.save(account);
         return new ResponseEntity<>(new ResponeAccount("Yes", account.getId()),HttpStatus.OK);
     }
-//    @PostMapping("/signin")
-//    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm){
-//        Authentication authentication = authenticationManager.authenticate(
-//                new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
-//        SecurityContextHolder.getContext().setAuthentication(authentication);
-//        String token = jwtProvider.createToken(authentication);
-//        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
-//        Long id = ((UserPrinciple) authentication.getPrincipal()).getId();
-//        return ResponseEntity.ok(new JwtResponse(id,token, userPrinciple.getName() ,userPrinciple.getAuthorities()));
-//    }
+    @PostMapping("/signin")
+    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm){
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        String token = jwtProvider.createToken(authentication);
+        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+        Long id = ((UserPrinciple) authentication.getPrincipal()).getId();
+        String a = authentication.getAuthorities().toString();
+        Long idCustom = -1L;
+        if(a.equals("[COMPANY]")){
+            Optional<Company> company = companyService.findAllByAccount_Id(id);
+            idCustom = company.get().getId();
+        }
+        if(a.equals("[USER]")){
+            Optional<User> user = userService.findByAccount_Id(id);
+            idCustom = user.get().getId();
+        }
+        if(a.equals("[ADMIN]")){
+            idCustom = -10L;
+        }
+        return ResponseEntity.ok(new JwtResponse(id,idCustom,token, userPrinciple.getUsername(),userPrinciple.getAuthorities()));
+    }
 //    @PutMapping("/change-avatar")
 //    public ResponseEntity<?> updateAvatar(@RequestBody ChangeAvatar avatar){
 //        User user = userDetailService.getCurrentUser();
