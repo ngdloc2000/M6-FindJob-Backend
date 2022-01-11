@@ -14,6 +14,10 @@ public class CityController {
     @Autowired
     private CityService cityService;
 
+    @GetMapping("/showAll")
+    public ResponseEntity<Iterable<City>> showAll() {
+        return new ResponseEntity<>(cityService.findAll(), HttpStatus.OK);
+    }
     @PostMapping("/createCity")
     public ResponseEntity<City> createCity(@RequestBody City city){
         return new ResponseEntity<>(cityService.save(city), HttpStatus.CREATED);
