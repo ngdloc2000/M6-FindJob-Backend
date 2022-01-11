@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "apply")
@@ -23,4 +24,5 @@ public class Apply {
     @Enumerated(EnumType.STRING)
     @NaturalId
     private Status status;
+    private LocalDate date;
 }

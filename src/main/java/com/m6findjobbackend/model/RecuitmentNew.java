@@ -29,7 +29,7 @@ public class RecuitmentNew {
     private String description;
     private int quantity;
     private int gender;
-    @OneToOne
+    @ManyToOne(targetEntity = City.class)
     private City city;
     @Enumerated(EnumType.STRING)
     @NaturalId
