@@ -1,5 +1,6 @@
 package com.m6findjobbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,6 @@ import java.util.Set;
 
 @Data
 @Entity
-@NoArgsConstructor
-@AllArgsConstructor
 @Table(name = "account", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
                 "username"
@@ -26,6 +25,7 @@ public class Account {
     @Email
     private String username;
     private String password;
+    @JsonIgnore
     @Enumerated(EnumType.STRING)
     @NaturalId
     private Status status;
@@ -33,4 +33,34 @@ public class Account {
     @JoinTable(name = "account_role",
             joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     Set<Role> roles = new HashSet<>();
+
+    public Account(Long id, String username, String password, Status status, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.roles = roles;
+    }
+
+    public Account(String username, String password, Status status, Set<Role> roles) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.roles = roles;
+    }
+
+    public Account(String username, String password, Status status) {
+        this.username = username;
+        this.password = password;
+        this.status = status;
+    }
+
+    public Account(String username, String password) {
+        this.username = username;
+        this.password = password;
+    }
+
+    public Account() {
+
+    }
 }
