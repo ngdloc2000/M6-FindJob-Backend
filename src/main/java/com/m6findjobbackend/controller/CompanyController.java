@@ -40,7 +40,6 @@ public class CompanyController {
         System.out.println(codeCompany);
         company.setCodeCompany(nameex + company.getAccount().getId() + codeCompany);
         //
-
         company.setStatusCompany(Status.NON_ACTIVE);
 //        if(company.getAvatar()==null){
 //            return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
@@ -82,13 +81,37 @@ public class CompanyController {
     }
 
     @PutMapping("/change_status")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody StatusRequest statusRequest) {
+    public ResponseEntity<?> updateCompany1(@PathVariable Long id, @RequestBody StatusRequest statusRequest){
         Account account = userDetailServices.getCurrentUser();
         if (account.getUsername().equals("Anonymous")) {
             return new ResponseEntity<>(new ResponseMessage("Please login"), HttpStatus.OK);
         }
         Optional<Company> company1 = companyService.findById(id);
-        return new ResponseEntity<>(new ResponseMessage("Yes"), HttpStatus.OK);
+        if(!company1.isPresent()){
+            if(statusRequest.getStatus() == 1){
+                company1.get().setStatusCompany(Status.ACTIVE);
+            }
+            if(statusRequest.getStatus() == 2){
+                company1.get().setStatusCompany(Status.NON_ACTIVE);
+            }
+            if(statusRequest.getStatus() == 3){
+                company1.get().setStatusCompany(Status.LOCK);
+            }
+            if(statusRequest.getStatus() == 4){
+                company1.get().setStatusCompany(Status.UNLOCK);
+            }
+            if(statusRequest.getStatus() == 5){
+                company1.get().setStatusCompany(Status.HOT);
+            }
+            if(statusRequest.getStatus() == 6){
+                company1.get().setStatusCompany(Status.WAIT);
+            }
+            if(statusRequest.getStatus() == 7){
+                company1.get().setStatusCompany(Status.REJECT);
+            }
+            companyService.save(company1.get());
+        }
+        return new ResponseEntity<>(new ResponseMessage("Yes"),HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
