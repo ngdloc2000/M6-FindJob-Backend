@@ -108,5 +108,10 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
 
     }
+    @GetMapping("/findJob")
+    public ResponseEntity<List<RecuitmentNew>> findJobByCityAndField(@RequestParam(required = false) String nameCity, @RequestParam(required = false) String nameField) {
+        return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
+    }
+
 
 }
