@@ -54,6 +54,7 @@ public class CityController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         cityService.deleteById(id);
+
         return new ResponseEntity<>(cityOptional.get(),HttpStatus.OK);
     }
 }
