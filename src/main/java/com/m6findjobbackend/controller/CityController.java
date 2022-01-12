@@ -2,6 +2,7 @@ package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.model.City;
 import com.m6findjobbackend.service.city.CityService;
+import com.m6findjobbackend.service.field.FieldService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +16,8 @@ import java.util.Optional;
 public class CityController {
     @Autowired
     private CityService cityService;
+    @Autowired
+    private FieldService fieldService;
 
     @GetMapping("/showAll")
     public ResponseEntity<Iterable<City>> showAll() {
@@ -57,4 +60,7 @@ public class CityController {
 
         return new ResponseEntity<>(cityOptional.get(),HttpStatus.OK);
     }
+
+//    @GetMapping("/findCityAndField")
+//    public ResponseEntity<City>
 }

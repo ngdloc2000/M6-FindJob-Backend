@@ -3,18 +3,14 @@ package com.m6findjobbackend.controller;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
-import com.m6findjobbackend.service.city.CityService;
-import com.m6findjobbackend.service.company.CompanyService;
-import com.m6findjobbackend.service.field.FieldService;
 import com.m6findjobbackend.service.recruitmentNew.RecruitmentNewService;
-import com.m6findjobbackend.service.vacancies.VacanciesService;
-import com.m6findjobbackend.service.workingTime.WorkingTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -39,7 +35,7 @@ public class RecruitmentNewController {
 //    CityService cityService;
 
     @GetMapping("/list")
-    public ResponseEntity<?> showListRecruitmentNew(){
+    public ResponseEntity<?> showListRecruitmentNew() {
         List<RecuitmentNew> recuitmentNewList = (List<RecuitmentNew>) recruitmentNewService.findAll();
         if (recuitmentNewList.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -48,8 +44,8 @@ public class RecruitmentNewController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createRecruitmentNew(@RequestBody RecuitmentNew recuitmentNew){
-        if (recuitmentNew.getQuantity() == Integer.parseInt(null)) {
+    public ResponseEntity<?> createRecruitmentNew(@RequestBody RecuitmentNew recuitmentNew) {
+        if (recuitmentNew.getQuantity() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
         }
         //tao codeCompany
@@ -62,5 +58,54 @@ public class RecruitmentNewController {
         recruitmentNewService.save(recuitmentNew);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detailRecruitmentNew(@PathVariable Long id) {
+        Optional<RecuitmentNew> recuitmentNew = recruitmentNewService.findById(id);
+        if (!recuitmentNew.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(recuitmentNew, HttpStatus.OK);
+    }
+
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> deleteRecruitmentNew(@PathVariable Long id) {
+        Optional<RecuitmentNew> recuitmentNew = recruitmentNewService.findById(id);
+        if (!recuitmentNew.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        recruitmentNewService.deleteById(id);
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+
+
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateRecruitmentNew(@PathVariable Long id, @RequestBody RecuitmentNew recuitmentNew) {
+        Optional<RecuitmentNew> recuitmentNew1 = recruitmentNewService.findById(id);
+        if (!recuitmentNew1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        if (recuitmentNew.getQuantity() == null) {
+            return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
+        }
+        recuitmentNew1.get().setTitle(recuitmentNew.getTitle());
+        recuitmentNew1.get().setWorkingTime(recuitmentNew.getWorkingTime());
+        recuitmentNew1.get().setField(recuitmentNew.getField());
+        recuitmentNew1.get().setVacancies(recuitmentNew.getVacancies());
+        recuitmentNew1.get().setExpDate(recuitmentNew.getExpDate());
+        recuitmentNew1.get().setDescription(recuitmentNew.getDescription());
+        recuitmentNew1.get().setQuantity(recuitmentNew.getQuantity());
+        recuitmentNew1.get().setGender(recuitmentNew.getGender());
+        recuitmentNew1.get().setCity(recuitmentNew.getCity());
+        recruitmentNewService.save(recuitmentNew1.get());
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+
+    }
+    @GetMapping("/findJob")
+    public ResponseEntity<List<RecuitmentNew>> findJobByCityAndField(@RequestParam(required = false) String nameCity, @RequestParam(required = false) String nameField) {
+        return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
+    }
+
 
 }

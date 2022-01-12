@@ -20,4 +20,5 @@ public class City {
     @OneToMany(targetEntity = RecuitmentNew.class, mappedBy = "city")
     @JsonIgnore
     private List<RecuitmentNew> recuitmentNews;
+
 }

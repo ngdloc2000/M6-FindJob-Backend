@@ -27,7 +27,7 @@ public class RecuitmentNew {
     private Vacancies vacancies;
     private LocalDate expDate;
     private String description;
-    private int quantity;
+    private Integer quantity;
     private int gender;
     @ManyToOne(targetEntity = City.class)
     private City city;
