@@ -7,12 +7,14 @@ import com.m6findjobbackend.dto.response.JwtResponse;
 import com.m6findjobbackend.dto.response.ResponeAccount;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.*;
+import com.m6findjobbackend.model.email.MailObject;
 import com.m6findjobbackend.security.jwt.JwtProvider;
 import com.m6findjobbackend.security.userprincipal.UserDetailServices;
 import com.m6findjobbackend.security.userprincipal.UserPrinciple;
 import com.m6findjobbackend.service.account.AccountService;
 import com.m6findjobbackend.service.company.CompanyService;
 import com.m6findjobbackend.service.company.ICompanyService;
+import com.m6findjobbackend.service.email.EmailServiceImpl;
 import com.m6findjobbackend.service.role.RoleService;
 import com.m6findjobbackend.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,6 +53,9 @@ public class AuthController {
     CompanyService companyService;
 
     @Autowired
+    EmailServiceImpl emailService;
+
+    @Autowired
     UserService userService;
 
     @PostMapping("/signup")
@@ -58,7 +63,10 @@ public class AuthController {
         if(accountService.existsByUsername(signUpForm.getUsername())){
             return new ResponseEntity<>(new ResponeAccount("no_user", -1L), HttpStatus.OK);
         }
-        Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode(signUpForm.getPassword()));
+        int min = 10000000;
+        int max = 99999999;
+        String newPassword = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
+        Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode(newPassword));
         Set<String> strRoles = signUpForm.getRoles();
         Set<Role> roles = new HashSet<>();
         strRoles.forEach(role ->{
@@ -78,6 +86,8 @@ public class AuthController {
                     roles.add(userRole);
             }
         });
+        MailObject mailObject = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + newPassword );
+        emailService.sendSimpleMessage(mailObject);
         account.setRoles(roles);
         account.setStatus(Status.NON_ACTIVE);
         accountService.save(account);
@@ -104,6 +114,7 @@ public class AuthController {
         if(a.equals("[ADMIN]")){
             idCustom = -10L;
         }
+
         return ResponseEntity.ok(new JwtResponse(id,idCustom,token, userPrinciple.getUsername(),userPrinciple.getAuthorities()));
     }
 //    @PutMapping("/change-avatar")
