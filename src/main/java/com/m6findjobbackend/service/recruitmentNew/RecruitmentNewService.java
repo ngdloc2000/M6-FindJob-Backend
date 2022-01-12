@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -37,5 +38,10 @@ public class RecruitmentNewService implements IRecruitmentNewService{
     @Override
     public Optional<RecuitmentNew> findById(Long id) {
         return recruitmentNewRepository.findById(id);
+    }
+
+    @Override
+    public List<RecuitmentNew> findByNameCityAndNameField(String nameCity, String nameField) {
+        return recruitmentNewRepository.findByNameCityAndNameField(nameCity,nameField);
     }
 }
