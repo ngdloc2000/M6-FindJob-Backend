@@ -1,15 +1,9 @@
 package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.response.ResponseMessage;
-import com.m6findjobbackend.model.Company;
 import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
-import com.m6findjobbackend.service.city.CityService;
-import com.m6findjobbackend.service.company.CompanyService;
-import com.m6findjobbackend.service.field.FieldService;
 import com.m6findjobbackend.service.recruitmentNew.RecruitmentNewService;
-import com.m6findjobbackend.service.vacancies.VacanciesService;
-import com.m6findjobbackend.service.workingTime.WorkingTimeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +45,7 @@ public class RecruitmentNewController {
 
     @PostMapping
     public ResponseEntity<?> createRecruitmentNew(@RequestBody RecuitmentNew recuitmentNew) {
-        if (recuitmentNew.getQuantity() == Integer.parseInt(null)) {
+        if (recuitmentNew.getQuantity() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
         }
         //tao codeCompany
@@ -92,7 +86,7 @@ public class RecruitmentNewController {
         if (!recuitmentNew1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        if (recuitmentNew.getQuantity() == Integer.parseInt(null)) {
+        if (recuitmentNew.getQuantity() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
         }
         recuitmentNew1.get().setTitle(recuitmentNew.getTitle());
