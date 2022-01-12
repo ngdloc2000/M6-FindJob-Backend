@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -25,21 +24,23 @@ public class CompanyController {
     UserDetailServices userDetailServices;
 
     @PostMapping("")
-    public ResponseEntity<?> createCategory(@RequestBody Company company){
+    public ResponseEntity<?> createCategory(@RequestBody Company company) {
 //        Account account = userDetailServices.getCurrentUser();
 //        if(account.getUsername().equals("Anonymous")){
 //            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
 //        }
-        if(companyService.existsByName(company.getName())){
-            return new ResponseEntity<>(new ResponseMessage("no_name_company"), HttpStatus.OK);
+
+        if (companyService.existsByName(company.getName())) {
+            return new ResponseEntity<>(new ResponseMessage("no_name_category"), HttpStatus.OK);
+
         }
         //tao codeCompany
-        String nameex = company.getName().substring(0,3);
+        String nameex = company.getName().substring(0, 3);
         int min = 1000;
         int max = 9999;
         String codeCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
         System.out.println(codeCompany);
-        company.setCodeCompany(nameex+ company.getAccount().getId() + codeCompany);
+        company.setCodeCompany(nameex + company.getAccount().getId() + codeCompany);
         //
         company.setStatusCompany(Status.NON_ACTIVE);
         if(company.getAvatar()==null){
@@ -48,25 +49,26 @@ public class CompanyController {
         companyService.save(company);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
+
     @GetMapping("/list")
-    public ResponseEntity<?> showListCompany(){
+    public ResponseEntity<?> showListCompany() {
         Iterable<Company> companyList = companyService.findAll();
         return new ResponseEntity<>(companyList, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company company){
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company company) {
         //        Account account = userDetailServices.getCurrentUser();
 //        if(account.getUsername().equals("Anonymous")){
 //            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
 //        }
         Optional<Company> company1 = companyService.findById(id);
-        if(!company1.isPresent()){
+        if (!company1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if(companyService.existsByName(company.getName())){
-            if(!company.getAvatar().equals(company1.get().getAvatar())){
+        if (companyService.existsByName(company.getName())) {
+            if (!company.getAvatar().equals(company1.get().getAvatar())) {
                 company1.get().setAvatar(company.getAvatar());
                 companyService.save(company1.get());
                 return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
@@ -78,11 +80,12 @@ public class CompanyController {
         companyService.save(company1.get());
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
+
     @PutMapping("/change_status")
     public ResponseEntity<?> updateCompany1(@PathVariable Long id, @RequestBody StatusRequest statusRequest){
         Account account = userDetailServices.getCurrentUser();
-        if(account.getUsername().equals("Anonymous")){
-            return new ResponseEntity<>(new ResponseMessage("Please login"),HttpStatus.OK);
+        if (account.getUsername().equals("Anonymous")) {
+            return new ResponseEntity<>(new ResponseMessage("Please login"), HttpStatus.OK);
         }
         Optional<Company> company1 = companyService.findById(id);
         if(!company1.isPresent()){
@@ -111,18 +114,20 @@ public class CompanyController {
         }
         return new ResponseEntity<>(new ResponseMessage("Yes"),HttpStatus.OK);
     }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> detailCompany(@PathVariable Long id){
+    public ResponseEntity<?> detailCompany(@PathVariable Long id) {
         Optional<Company> company = companyService.findById(id);
-        if(!company.isPresent()){
+        if (!company.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(company, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteCompany(@PathVariable Long id){
+    public ResponseEntity<?> deleteCompany(@PathVariable Long id) {
         Optional<Company> company = companyService.findById(id);
-        if(!company.isPresent()){
+        if (!company.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         companyService.deleteById(id);
