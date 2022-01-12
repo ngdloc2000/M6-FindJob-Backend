@@ -31,7 +31,7 @@ public class CompanyController {
 //            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
 //        }
         if(companyService.existsByName(company.getName())){
-            return new ResponseEntity<>(new ResponseMessage("no_name_category"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("no_name_company"), HttpStatus.OK);
         }
         //tao codeCompany
         String nameex = company.getName().substring(0,3);
@@ -42,10 +42,9 @@ public class CompanyController {
         company.setCodeCompany(nameex+ company.getAccount().getId() + codeCompany);
         //
         company.setStatusCompany(Status.NON_ACTIVE);
-//        if(company.getAvatar()==null){
-//            return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
-//        }
-
+        if(company.getAvatar()==null){
+            return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
+        }
         companyService.save(company);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
