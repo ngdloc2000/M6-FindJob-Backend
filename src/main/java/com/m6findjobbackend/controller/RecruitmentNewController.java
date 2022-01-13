@@ -89,6 +89,9 @@ public class RecruitmentNewController {
         if (recuitmentNew.getQuantity() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
         }
+        if (recuitmentNew.getSalary() == null) {
+            return new ResponseEntity<>(new ResponseMessage("no_salary"), HttpStatus.OK);
+        }
         recuitmentNew1.get().setTitle(recuitmentNew.getTitle());
         recuitmentNew1.get().setWorkingTime(recuitmentNew.getWorkingTime());
         recuitmentNew1.get().setField(recuitmentNew.getField());
@@ -96,6 +99,7 @@ public class RecruitmentNewController {
         recuitmentNew1.get().setExpDate(recuitmentNew.getExpDate());
         recuitmentNew1.get().setDescription(recuitmentNew.getDescription());
         recuitmentNew1.get().setQuantity(recuitmentNew.getQuantity());
+        recuitmentNew1.get().setSalary(recuitmentNew.getSalary());
         recuitmentNew1.get().setGender(recuitmentNew.getGender());
         recuitmentNew1.get().setCity(recuitmentNew.getCity());
         recruitmentNewService.save(recuitmentNew1.get());
@@ -107,5 +111,9 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
     }
 
+    @GetMapping("/showAll/{id}")
+    public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
+        return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
+    }
 
 }
