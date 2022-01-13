@@ -89,6 +89,9 @@ public class RecruitmentNewController {
         if (recuitmentNew.getQuantity() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_quantity"), HttpStatus.OK);
         }
+        if (recuitmentNew.getSalary() == null) {
+            return new ResponseEntity<>(new ResponseMessage("no_salary"), HttpStatus.OK);
+        }
         recuitmentNew1.get().setTitle(recuitmentNew.getTitle());
         recuitmentNew1.get().setWorkingTime(recuitmentNew.getWorkingTime());
         recuitmentNew1.get().setField(recuitmentNew.getField());
