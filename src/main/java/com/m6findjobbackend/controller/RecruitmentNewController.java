@@ -96,6 +96,7 @@ public class RecruitmentNewController {
         recuitmentNew1.get().setExpDate(recuitmentNew.getExpDate());
         recuitmentNew1.get().setDescription(recuitmentNew.getDescription());
         recuitmentNew1.get().setQuantity(recuitmentNew.getQuantity());
+        recuitmentNew1.get().setSalary(recuitmentNew.getSalary());
         recuitmentNew1.get().setGender(recuitmentNew.getGender());
         recuitmentNew1.get().setCity(recuitmentNew.getCity());
         recruitmentNewService.save(recuitmentNew1.get());
