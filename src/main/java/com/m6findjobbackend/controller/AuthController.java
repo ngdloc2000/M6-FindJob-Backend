@@ -95,7 +95,7 @@ public class AuthController {
         return new ResponseEntity<>(new ResponeAccount("Yes", account.getId()),HttpStatus.OK);
     }
     @PostMapping("/signin")
-    public ResponseEntity<?> login(@Valid @RequestBody SignInForm signInForm){
+    public ResponseEntity<?> login(@RequestBody SignInForm signInForm){
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
