@@ -111,5 +111,9 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
     }
 
+    @GetMapping("/showAll/{id}")
+    public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
+        return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
+    }
 
 }
