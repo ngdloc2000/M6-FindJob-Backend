@@ -20,7 +20,6 @@ public class User {
     private String name;
     private String address;
     private String phone;
-    private String fileCV;
     @OneToOne
     private Account account;
     @OneToMany(targetEntity = Apply.class, mappedBy = "user")
