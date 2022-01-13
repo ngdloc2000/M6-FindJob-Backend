@@ -13,4 +13,5 @@ public interface IRecruitmentNewRepository extends JpaRepository<RecuitmentNew,L
    @Query("select r.company from RecuitmentNew r where (:name is null and r.city.name like %:name%) and (:field is null and r.field.name like %:field%)" )
    List<RecuitmentNew> findByNameCityAndNameField(@Param("name") String nameCity, @Param("field") String nameField);
 
+   List<RecuitmentNew>findAllByCompany_Id(Long id);
 }
