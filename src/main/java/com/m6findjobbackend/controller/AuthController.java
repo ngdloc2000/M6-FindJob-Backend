@@ -64,10 +64,8 @@ public class AuthController {
         if(accountService.existsByUsername(signUpForm.getUsername())){
             return new ResponseEntity<>(new ResponeAccount("no_user", -1L), HttpStatus.OK);
         }
-        int min = 10000000;
-        int max = 99999999;
-        String newPassword = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
-        Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode(newPassword));
+        String passwordOld = signUpForm.getPassword();
+        Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode(passwordOld));
         Set<String> strRoles = signUpForm.getRoles();
         Set<Role> roles = new HashSet<>();
         strRoles.forEach(role ->{
@@ -81,19 +79,28 @@ public class AuthController {
                 case "company":
                     Role pmRole = roleService.findByName(RoleName.COMPANY).orElseThrow( ()-> new RuntimeException("Role not found"));
                     roles.add(pmRole);
+                    int min = 10000000;
+                    int max = 99999999;
+                    String passwordNew = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
+                    account.setPassword(passwordEncoder.encode(passwordNew));
+                    MailObject mailObject = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + passwordNew );
+                    emailService.sendSimpleMessage(mailObject);
                     break;
                 default:
                     Role userRole = roleService.findByName(RoleName.USER).orElseThrow( ()-> new RuntimeException("Role not found"));
+                    MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + passwordOld );
+                    emailService.sendSimpleMessage(mailObject1);
                     roles.add(userRole);
             }
         });
-        MailObject mailObject = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + newPassword );
-        emailService.sendSimpleMessage(mailObject);
+
         account.setRoles(roles);
         account.setStatus(Status.NON_ACTIVE);
         accountService.save(account);
         return new ResponseEntity<>(new ResponeAccount("Yes", account.getId()),HttpStatus.OK);
     }
+
+
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody SignInForm signInForm){
         Authentication authentication = authenticationManager.authenticate(
