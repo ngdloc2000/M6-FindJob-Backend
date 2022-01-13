@@ -71,16 +71,12 @@ public class CompanyController {
         if (!company1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-//        if (companyService.existsByName(editCompany.getName())) {
-//            if (!editCompany.getAvatar().equals(company1.get().getAvatar())) {
-//                company1.get().setAvatar(editCompany.getAvatar());
-//                companyService.save(company1.get());
-//                return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
-//            }
-//        }
+
+        Boolean check = false;
         if (companyService.existsByName(editCompany.getName())) {
-            return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
+            check = true;
         }
+
         if (editCompany.getAvatar() != null) {
             company1.get().setAvatar(editCompany.getAvatar());
         }
@@ -91,14 +87,11 @@ public class CompanyController {
             company1.get().setDescription(editCompany.getDescription());
         }
         if (editCompany.getAddress() != null) {
-            company1.get().setDescription(editCompany.getAddress());
+            company1.get().setAddress(editCompany.getAddress());
         }
         if (editCompany.getEmployeeQuantity() != null) {
             company1.get().setEmployeeQuantity(editCompany.getEmployeeQuantity());
         }
-//        if(editCompany.getCity().getId() != null){
-//            company1.get().setCity(cityService.findById(editCompany.getCity().getId()).get());
-//        }
         if (editCompany.getLinkMap() != null) {
             company1.get().setLinkMap(editCompany.getLinkMap());
         }
@@ -106,6 +99,9 @@ public class CompanyController {
             company1.get().setPhone(editCompany.getPhone());
         }
         companyService.save(company1.get());
+        if (check == true) {
+            return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
+        }
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
