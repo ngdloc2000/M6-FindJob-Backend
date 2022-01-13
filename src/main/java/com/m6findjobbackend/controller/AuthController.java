@@ -68,8 +68,6 @@ public class AuthController {
         int max = 99999999;
         String newPassword = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
         Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode(newPassword));
-        //fix cứng
-//        Account account = new Account(signUpForm.getUsername(),passwordEncoder.encode("123456"));
         Set<String> strRoles = signUpForm.getRoles();
         Set<Role> roles = new HashSet<>();
         strRoles.forEach(role ->{
