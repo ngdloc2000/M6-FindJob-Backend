@@ -48,7 +48,7 @@ public class CompanyController {
         company.setCodeCompany(nameex + company.getAccount().getId() + codeCompany);
         //
         company.setStatusCompany(Status.NON_ACTIVE);
-        if(company.getAvatar()==null){
+        if (company.getAvatar() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
         }
         companyService.save(company);
@@ -63,8 +63,8 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody EditCompany editCompany) {
-                Account account = userDetailServices.getCurrentUser();
-        if(account.getUsername().equals("Anonymous")){
+        Account account = userDetailServices.getCurrentUser();
+        if (account.getUsername().equals("Anonymous")) {
             return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
         }
         Optional<Company> company1 = companyService.findById(id);
@@ -78,31 +78,31 @@ public class CompanyController {
 //                return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
 //            }
 //        }
-        if(companyService.existsByName(editCompany.getName())){
+        if (companyService.existsByName(editCompany.getName())) {
             return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
         }
-        if(editCompany.getAvatar() != null){
+        if (editCompany.getAvatar() != null) {
             company1.get().setAvatar(editCompany.getAvatar());
         }
-        if(editCompany.getName() != null){
+        if (editCompany.getName() != null) {
             company1.get().setName(editCompany.getName());
         }
-        if(editCompany.getDescription() != null){
+        if (editCompany.getDescription() != null) {
             company1.get().setDescription(editCompany.getDescription());
         }
-        if(editCompany.getAddress() != null){
+        if (editCompany.getAddress() != null) {
             company1.get().setDescription(editCompany.getAddress());
         }
-        if(editCompany.getEmployeeQuantity() != null){
+        if (editCompany.getEmployeeQuantity() != null) {
             company1.get().setEmployeeQuantity(editCompany.getEmployeeQuantity());
         }
 //        if(editCompany.getCity().getId() != null){
 //            company1.get().setCity(cityService.findById(editCompany.getCity().getId()).get());
 //        }
-        if(editCompany.getLinkMap() != null){
-            company1.get().setLinkMap(editCompany.getLinkMap() );
+        if (editCompany.getLinkMap() != null) {
+            company1.get().setLinkMap(editCompany.getLinkMap());
         }
-        if(editCompany.getPhone() != null){
+        if (editCompany.getPhone() != null) {
             company1.get().setPhone(editCompany.getPhone());
         }
         companyService.save(company1.get());
@@ -110,37 +110,37 @@ public class CompanyController {
     }
 
     @PutMapping("/change_status")
-    public ResponseEntity<?> updateCompany1(@PathVariable Long id, @RequestBody StatusRequest statusRequest){
+    public ResponseEntity<?> updateCompany1(@PathVariable Long id, @RequestBody StatusRequest statusRequest) {
         Account account = userDetailServices.getCurrentUser();
         if (account.getUsername().equals("Anonymous")) {
             return new ResponseEntity<>(new ResponseMessage("Please login"), HttpStatus.OK);
         }
         Optional<Company> company1 = companyService.findById(id);
-        if(!company1.isPresent()){
-            if(statusRequest.getStatus() == 1){
+        if (!company1.isPresent()) {
+            if (statusRequest.getStatus() == 1) {
                 company1.get().setStatusCompany(Status.ACTIVE);
             }
-            if(statusRequest.getStatus() == 2){
+            if (statusRequest.getStatus() == 2) {
                 company1.get().setStatusCompany(Status.NON_ACTIVE);
             }
-            if(statusRequest.getStatus() == 3){
+            if (statusRequest.getStatus() == 3) {
                 company1.get().setStatusCompany(Status.LOCK);
             }
-            if(statusRequest.getStatus() == 4){
+            if (statusRequest.getStatus() == 4) {
                 company1.get().setStatusCompany(Status.UNLOCK);
             }
-            if(statusRequest.getStatus() == 5){
+            if (statusRequest.getStatus() == 5) {
                 company1.get().setStatusCompany(Status.HOT);
             }
-            if(statusRequest.getStatus() == 6){
+            if (statusRequest.getStatus() == 6) {
                 company1.get().setStatusCompany(Status.WAIT);
             }
-            if(statusRequest.getStatus() == 7){
+            if (statusRequest.getStatus() == 7) {
                 company1.get().setStatusCompany(Status.REJECT);
             }
             companyService.save(company1.get());
         }
-        return new ResponseEntity<>(new ResponseMessage("Yes"),HttpStatus.OK);
+        return new ResponseEntity<>(new ResponseMessage("Yes"), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
