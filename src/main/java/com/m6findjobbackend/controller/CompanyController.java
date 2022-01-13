@@ -1,11 +1,13 @@
 package com.m6findjobbackend.controller;
 
+import com.m6findjobbackend.dto.request.EditCompany;
 import com.m6findjobbackend.dto.request.StatusRequest;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.Account;
 import com.m6findjobbackend.model.Company;
 import com.m6findjobbackend.model.Status;
 import com.m6findjobbackend.security.userprincipal.UserDetailServices;
+import com.m6findjobbackend.service.city.CityService;
 import com.m6findjobbackend.service.company.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,9 @@ public class CompanyController {
     CompanyService companyService;
     @Autowired
     UserDetailServices userDetailServices;
+
+    @Autowired
+    CityService cityService;
 
     @PostMapping("")
     public ResponseEntity<?> createCategory(@RequestBody Company company) {
@@ -57,8 +62,8 @@ public class CompanyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody Company company) {
-        //        Account account = userDetailServices.getCurrentUser();
+    public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody EditCompany editCompany) {
+//                Account account = userDetailServices.getCurrentUser();
 //        if(account.getUsername().equals("Anonymous")){
 //            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
 //        }
@@ -66,17 +71,40 @@ public class CompanyController {
         if (!company1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-
-        if (companyService.existsByName(company.getName())) {
-            if (!company.getAvatar().equals(company1.get().getAvatar())) {
-                company1.get().setAvatar(company.getAvatar());
-                companyService.save(company1.get());
-                return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
-            }
-            return new ResponseEntity<>(new ResponseMessage("no_name_category"), HttpStatus.OK);
+//        if (companyService.existsByName(editCompany.getName())) {
+//            if (!editCompany.getAvatar().equals(company1.get().getAvatar())) {
+//                company1.get().setAvatar(editCompany.getAvatar());
+//                companyService.save(company1.get());
+//                return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+//            }
+//        }
+        if(companyService.existsByName(editCompany.getName())){
+            return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
         }
-        company1.get().setName(company.getName());
-        company1.get().setAvatar(company.getAvatar());
+        if(editCompany.getAvatar() != null){
+            company1.get().setAvatar(editCompany.getAvatar());
+        }
+        if(editCompany.getName() != null){
+            company1.get().setName(editCompany.getName());
+        }
+        if(editCompany.getDescription() != null){
+            company1.get().setDescription(editCompany.getDescription());
+        }
+        if(editCompany.getAddress() != null){
+            company1.get().setDescription(editCompany.getAddress());
+        }
+        if(editCompany.getEmployeeQuantity() != null){
+            company1.get().setEmployeeQuantity(editCompany.getEmployeeQuantity());
+        }
+//        if(editCompany.getCity().getId() != null){
+//            company1.get().setCity(cityService.findById(editCompany.getCity().getId()).get());
+//        }
+        if(editCompany.getLinkMap() != null){
+            company1.get().setLinkMap(editCompany.getLinkMap() );
+        }
+        if(editCompany.getPhone() != null){
+            company1.get().setPhone(editCompany.getPhone());
+        }
         companyService.save(company1.get());
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
