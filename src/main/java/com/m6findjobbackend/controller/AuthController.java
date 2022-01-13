@@ -1,6 +1,7 @@
 package com.m6findjobbackend.controller;
 
 
+import com.m6findjobbackend.dto.request.ChangePassword;
 import com.m6findjobbackend.dto.request.SignInForm;
 import com.m6findjobbackend.dto.request.SignUpForm;
 import com.m6findjobbackend.dto.response.JwtResponse;
@@ -117,15 +118,19 @@ public class AuthController {
 
         return ResponseEntity.ok(new JwtResponse(id,idCustom,token, userPrinciple.getUsername(),userPrinciple.getAuthorities()));
     }
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePassword changePassword){
+        Account account = userDetailService.getCurrentUser();
+        if(account.getUsername().equals("Anonymous")){
+            return new ResponseEntity<>(new ResponseMessage("Please login"),HttpStatus.OK);
+        }
+        account.setPassword(passwordEncoder.encode(changePassword.getPassword()));
+        accountService.save(account);
+        return new ResponseEntity<>(new ResponseMessage("yes"),HttpStatus.OK);
+    }
 //    @PutMapping("/change-avatar")
 //    public ResponseEntity<?> updateAvatar(@RequestBody ChangeAvatar avatar){
-//        User user = userDetailService.getCurrentUser();
-//        if(user.getUsername().equals("Anonymous")){
-//            return new ResponseEntity<>(new ResponMessage("Please login"),HttpStatus.OK);
-//        }
-//        user.setAvatar(avatar.getAvatar());
-//        accountService.save(user);
-//        return new ResponseEntity<>(new ResponMessage("yes"),HttpStatus.OK);
+
 //
 //    }
 }
