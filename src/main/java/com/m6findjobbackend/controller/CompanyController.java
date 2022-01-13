@@ -63,10 +63,10 @@ public class CompanyController {
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateCompany(@PathVariable Long id, @RequestBody EditCompany editCompany) {
-//                Account account = userDetailServices.getCurrentUser();
-//        if(account.getUsername().equals("Anonymous")){
-//            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
-//        }
+                Account account = userDetailServices.getCurrentUser();
+        if(account.getUsername().equals("Anonymous")){
+            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);
+        }
         Optional<Company> company1 = companyService.findById(id);
         if (!company1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
