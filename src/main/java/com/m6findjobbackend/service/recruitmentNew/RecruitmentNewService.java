@@ -41,11 +41,6 @@ public class RecruitmentNewService implements IRecruitmentNewService{
     }
 
     @Override
-    public List<RecuitmentNew> findByNameCityAndNameField(String nameCity, String nameField) {
-        return recruitmentNewRepository.findByNameCityAndNameField(nameCity,nameField);
-    }
-
-    @Override
     public List<RecuitmentNew> findAllByCompany_Id(Long id) {
         return recruitmentNewRepository.findAllByCompany_Id(id);
     }
