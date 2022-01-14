@@ -33,9 +33,7 @@ public class RecuitmentNew {
     private int gender;
     @ManyToOne(targetEntity = City.class)
     private City city;
-    @Enumerated(EnumType.STRING)
-    @NaturalId
-    private Status status;
+    private Boolean status;
     @OneToMany(targetEntity = Apply.class, mappedBy = "recuitmentNew")
     @JsonIgnore
     private List<Apply> applies;

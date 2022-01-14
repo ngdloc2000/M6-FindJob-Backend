@@ -1,8 +1,10 @@
 package com.m6findjobbackend.controller;
 
+
 import com.m6findjobbackend.dto.request.SearchJob;
 import com.m6findjobbackend.dto.response.PageResponse;
 import com.m6findjobbackend.dto.response.RecuitmentNewDTO;
+import com.m6findjobbackend.dto.request.StatusRequest;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
@@ -43,10 +45,12 @@ public class RecruitmentNewController {
         }
         //tao codeCompany
         String nameex = recuitmentNew.getTitle().substring(0, 3);
-        String nameCompany = recuitmentNew.getCompany().getCodeCompany();
-        recuitmentNew.setCodeNews(nameex + nameCompany + recuitmentNew.getId());
+        int min = 100;
+        int max = 999;
+        String nameCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));;
+        recuitmentNew.setCodeNews(nameex + nameCompany );
         System.out.println(recuitmentNew.getCodeNews());
-        recuitmentNew.setStatus(Status.UNLOCK);
+        recuitmentNew.setStatus(true);
 
         recruitmentNewService.save(recuitmentNew);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
@@ -103,6 +107,20 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
     }
 
+
+    @PutMapping("/editStatus/{id}")
+    public ResponseEntity<?> editStatus(@PathVariable Long id) {
+        Optional<RecuitmentNew> recuitmentNewOptional = recruitmentNewService.findById(id);
+        if (recuitmentNewOptional.get().getStatus()) {
+            recuitmentNewOptional.get().setStatus(false);
+        } else {
+            recuitmentNewOptional.get().setStatus(true);
+        }
+        recruitmentNewService.save(recuitmentNewOptional.get());
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+
+
     @GetMapping("/showPageRecuitmentNew")
     public ResponseEntity<?> showPageRecuitmentNew(@PageableDefault(sort = "title", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<RecuitmentNew> list = recruitmentNewService.findAll(pageable);
@@ -120,6 +138,7 @@ public class RecruitmentNewController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
 
     @PostMapping("/findByObj")
     public ResponseEntity<?> findByObj(@RequestBody SearchJob searchJob) {
