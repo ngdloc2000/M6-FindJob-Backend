@@ -40,8 +40,10 @@ public class RecruitmentNewController {
         }
         //tao codeCompany
         String nameex = recuitmentNew.getTitle().substring(0, 3);
-        String nameCompany = recuitmentNew.getCompany().getCodeCompany();
-        recuitmentNew.setCodeNews(nameex + nameCompany + recuitmentNew.getId());
+        int min = 100;
+        int max = 999;
+        String nameCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));;
+        recuitmentNew.setCodeNews(nameex + nameCompany );
         System.out.println(recuitmentNew.getCodeNews());
         recuitmentNew.setStatus(true);
 
