@@ -2,23 +2,14 @@ package com.m6findjobbackend.repository;
 
 import com.m6findjobbackend.dto.request.SearchJob;
 import com.m6findjobbackend.dto.response.RecuitmentNewDTO;
-import com.m6findjobbackend.model.RecuitmentNew;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcCall;
-import org.springframework.jdbc.object.StoredProcedure;
 import org.springframework.stereotype.Repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -42,6 +33,13 @@ public class IRecruitmentNewDAOImpl implements IRecruitmentNewDAO {
                     recuitmentNewDTO.setCompanyId(rs.getLong("companyId"));
                     recuitmentNewDTO.setCityId(rs.getLong("cityId"));
                     recuitmentNewDTO.setCityName(rs.getString("cityName"));
+                    recuitmentNewDTO.setCompanyName(rs.getString("companyName"));
+                    recuitmentNewDTO.setFieldId(rs.getLong("fieldId"));
+                    recuitmentNewDTO.setFieldName(rs.getString("fieldName"));
+                    recuitmentNewDTO.setVacanciesId(rs.getLong("vacanciesId"));
+                    recuitmentNewDTO.setVacanciesName(rs.getString("vacanciesName"));
+                    recuitmentNewDTO.setWorkingTimeId(rs.getLong("workingTimeId"));
+                    recuitmentNewDTO.setWorkingTimeName(rs.getString("workingTimeName"));
                     return recuitmentNewDTO;
                 });
         SqlParameterSource in = new MapSqlParameterSource()

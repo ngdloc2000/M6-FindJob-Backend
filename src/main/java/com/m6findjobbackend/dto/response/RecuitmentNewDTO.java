@@ -12,7 +12,9 @@ public class RecuitmentNewDTO {
     private Long fieldId;
     private String fieldName;
     private Long vacanciesId;
+    private String vacanciesName;
     private Long workingTimeId;
+    private String workingTimeName;
 
     public Long getId() {
         return id;
@@ -108,5 +110,21 @@ public class RecuitmentNewDTO {
 
     public void setWorkingTimeId(Long workingTimeId) {
         this.workingTimeId = workingTimeId;
+    }
+
+    public String getVacanciesName() {
+        return vacanciesName;
+    }
+
+    public void setVacanciesName(String vacanciesName) {
+        this.vacanciesName = vacanciesName;
+    }
+
+    public String getWorkingTimeName() {
+        return workingTimeName;
+    }
+
+    public void setWorkingTimeName(String workingTimeName) {
+        this.workingTimeName = workingTimeName;
     }
 }

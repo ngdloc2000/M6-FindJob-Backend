@@ -58,7 +58,12 @@ public class RecruitmentNewService implements IRecruitmentNewService {
         List<RecuitmentNewDTO> list = recruitmentNewDAO.findJob(searchJob);
         PageResponse pageResponse = new PageResponse();
         pageResponse.setData(list);
-        pageResponse.setTotalRecord(recruitmentNewRepository.countTotalRecords());
+        pageResponse.setTotalRecord(recruitmentNewRepository.countTotalRecords(searchJob.getTitle(),
+                searchJob.getCityId(),
+                searchJob.getFieldId(),
+                searchJob.getCompanyId(),
+                searchJob.getVacancies(),
+                searchJob.getWorkingTimeId()));
         return pageResponse;
     }
 
