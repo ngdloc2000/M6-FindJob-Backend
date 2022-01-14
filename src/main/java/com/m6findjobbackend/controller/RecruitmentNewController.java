@@ -1,5 +1,6 @@
 package com.m6findjobbackend.controller;
 
+import com.m6findjobbackend.dto.request.StatusRequest;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
@@ -115,5 +116,19 @@ public class RecruitmentNewController {
     public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
         return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
     }
+
+    @PutMapping("/editStatus/{id}")
+    public ResponseEntity<?> editStatus(@PathVariable Long id, @RequestBody StatusRequest statusRequest) {
+        Optional<RecuitmentNew> recuitmentNewOptional = recruitmentNewService.findById(id);
+        if (statusRequest.getStatus() == 1) {
+            recuitmentNewOptional.get().setStatus(Status.LOCK);
+        } else if (statusRequest.getStatus() == 2) {
+            recuitmentNewOptional.get().setStatus(Status.UNLOCK);
+        }
+        recruitmentNewService.save(recuitmentNewOptional.get());
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+
+
 
 }
