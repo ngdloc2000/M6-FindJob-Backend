@@ -1,5 +1,8 @@
 package com.m6findjobbackend.controller;
 
+import com.m6findjobbackend.dto.request.SearchJob;
+import com.m6findjobbackend.dto.response.PageResponse;
+import com.m6findjobbackend.dto.response.RecuitmentNewDTO;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -115,5 +119,10 @@ public class RecruitmentNewController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping("/findByObj")
+    public ResponseEntity<?> findByObj(@RequestBody SearchJob searchJob) {
+        return new ResponseEntity<>(recruitmentNewService.searchByObj(searchJob), HttpStatus.OK);
     }
 }

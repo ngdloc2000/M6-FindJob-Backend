@@ -7,6 +7,8 @@ public class SearchJob {
     private Long companyId;
     private Long vacancies;
     private Long workingTimeId;
+    private Integer start;
+    private Integer pageSize;
 
     public SearchJob() {
     }
@@ -66,5 +68,20 @@ public class SearchJob {
 
     public void setFieldId(Long fieldId) {
         this.fieldId = fieldId;
+    }
+
+    public Integer getStart() {
+        return start;
+    }
+
+    public void setStart(Integer start) {
+        this.start = start;
+    }
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public Integer getPageSize() {
+        return pageSize;
     }
 }
