@@ -106,14 +106,15 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
 
     }
-    @GetMapping("/findJob")
-    public ResponseEntity<List<RecuitmentNew>> findJobByCityAndField(@RequestParam(required = false) String nameCity, @RequestParam(required = false) String nameField) {
-        return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
-    }
 
     @GetMapping("/showAll/{id}")
     public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
         return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
     }
 
+    @GetMapping("/findRecuitmentNewest")
+    public ResponseEntity<List<RecuitmentNew>> getRecuitmentNewest() {
+        List<RecuitmentNew> list = this.recruitmentNewService.findByOrderByIdDesc();
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }
