@@ -99,8 +99,17 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
     }
 
-    @GetMapping("/findRecuitmentNewest")
-    public ResponseEntity<?> getRecuitmentNewest(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+    @GetMapping("/showPageRecuitmentNew")
+    public ResponseEntity<?> showPageRecuitmentNew(@PageableDefault(sort = "title", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<RecuitmentNew> list = recruitmentNewService.findAll(pageable);
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/showRecuitmentNewest")
+    public ResponseEntity<?> showRecuitmentNewest(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<RecuitmentNew> list = recruitmentNewService.findAll(pageable);
         if (list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
