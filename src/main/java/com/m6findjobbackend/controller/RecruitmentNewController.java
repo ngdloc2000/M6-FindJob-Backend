@@ -5,6 +5,10 @@ import com.m6findjobbackend.model.RecuitmentNew;
 import com.m6findjobbackend.model.Status;
 import com.m6findjobbackend.service.recruitmentNew.RecruitmentNewService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,21 +22,6 @@ import java.util.Optional;
 public class RecruitmentNewController {
     @Autowired
     RecruitmentNewService recruitmentNewService;
-
-//    @Autowired
-//    WorkingTimeService workingTimeService;
-
-//    @Autowired
-//    FieldService fieldService;
-//
-//    @Autowired
-//    CompanyService companyService;
-
-//    @Autowired
-//    VacanciesService vacanciesService;
-//
-//    @Autowired
-//    CityService cityService;
 
     @GetMapping("/list")
     public ResponseEntity<?> showListRecruitmentNew() {
@@ -68,7 +57,6 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(recuitmentNew, HttpStatus.OK);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteRecruitmentNew(@PathVariable Long id) {
         Optional<RecuitmentNew> recuitmentNew = recruitmentNewService.findById(id);
@@ -78,7 +66,6 @@ public class RecruitmentNewController {
         recruitmentNewService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
-
 
     @PutMapping("/{id}")
     public ResponseEntity<?> updateRecruitmentNew(@PathVariable Long id, @RequestBody RecuitmentNew recuitmentNew) {
@@ -106,14 +93,27 @@ public class RecruitmentNewController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
 
     }
-    @GetMapping("/findJob")
-    public ResponseEntity<List<RecuitmentNew>> findJobByCityAndField(@RequestParam(required = false) String nameCity, @RequestParam(required = false) String nameField) {
-        return new ResponseEntity<>(recruitmentNewService.findByNameCityAndNameField(nameCity, nameField), HttpStatus.OK);
-    }
 
     @GetMapping("/showAll/{id}")
     public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
         return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
     }
 
+    @GetMapping("/showPageRecuitmentNew")
+    public ResponseEntity<?> showPageRecuitmentNew(@PageableDefault(sort = "title", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<RecuitmentNew> list = recruitmentNewService.findAll(pageable);
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @GetMapping("/showRecuitmentNewest")
+    public ResponseEntity<?> showRecuitmentNewest(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
+        Page<RecuitmentNew> list = recruitmentNewService.findAll(pageable);
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
 }
