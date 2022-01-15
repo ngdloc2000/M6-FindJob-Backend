@@ -16,7 +16,7 @@ public class CV {
     @OneToOne
     private User user;
     private int expYear;
-    private double salaryExpectation;
+    private Double salaryExpectation;
     private String fileCV;
     @OneToMany(targetEntity = Skill.class, mappedBy = "cv")
     @JsonIgnore

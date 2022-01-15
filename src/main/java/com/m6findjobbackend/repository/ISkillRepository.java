@@ -1,4 +1,4 @@
-package com.m6findjobbackend.repository.skill;
+package com.m6findjobbackend.repository;
 
 import com.m6findjobbackend.model.Skill;
 import org.springframework.data.jpa.repository.JpaRepository;

@@ -1,4 +1,4 @@
-package com.m6findjobbackend.repository.CV;
+package com.m6findjobbackend.repository;
 
 import com.m6findjobbackend.model.CV;
 import org.springframework.data.jpa.repository.JpaRepository;

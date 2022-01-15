@@ -1,4 +1,4 @@
-package com.m6findjobbackend.repository.workExp;
+package com.m6findjobbackend.repository;
 
 import com.m6findjobbackend.model.WorkExp;
 import org.springframework.data.jpa.repository.JpaRepository;
