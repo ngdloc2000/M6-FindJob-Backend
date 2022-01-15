@@ -29,7 +29,7 @@ public class CompanyController {
     CityService cityService;
 
     @PostMapping("")
-    public ResponseEntity<?> createCategory(@RequestBody Company company) {
+    public ResponseEntity<?> createCompany(@RequestBody Company company) {
 //        Account account = userDetailServices.getCurrentUser();
 //        if(account.getUsername().equals("Anonymous")){
 //            return new ResponseEntity<>(new ResponseMessage("Please login!"), HttpStatus.OK);

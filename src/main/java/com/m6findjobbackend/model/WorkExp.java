@@ -1,10 +1,13 @@
 package com.m6findjobbackend.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "workexp")
+@Data
 public class WorkExp {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
