@@ -15,6 +15,7 @@ public class RecuitmentNewDTO {
     private String vacanciesName;
     private Long workingTimeId;
     private String workingTimeName;
+    private String avatar;
 
     public Long getId() {
         return id;
@@ -26,6 +27,14 @@ public class RecuitmentNewDTO {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
     }
 
     public void setTitle(String title) {

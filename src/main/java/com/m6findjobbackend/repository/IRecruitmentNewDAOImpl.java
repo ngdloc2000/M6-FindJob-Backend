@@ -40,6 +40,7 @@ public class IRecruitmentNewDAOImpl implements IRecruitmentNewDAO {
                     recuitmentNewDTO.setVacanciesName(rs.getString("vacanciesName"));
                     recuitmentNewDTO.setWorkingTimeId(rs.getLong("workingTimeId"));
                     recuitmentNewDTO.setWorkingTimeName(rs.getString("workingTimeName"));
+                    recuitmentNewDTO.setAvatar(rs.getString("avatar"));
                     return recuitmentNewDTO;
                 });
         SqlParameterSource in = new MapSqlParameterSource()
