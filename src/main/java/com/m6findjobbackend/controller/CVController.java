@@ -1,5 +1,6 @@
 package com.m6findjobbackend.controller;
 
+import com.m6findjobbackend.dto.response.ResponeAccount;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.CV;
 import com.m6findjobbackend.model.City;
@@ -30,10 +31,10 @@ public class CVController {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
         if(cv.getSalaryExpectation()==null){
-            return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("no_SalaryExpectation_cv"), HttpStatus.OK);
         }
         cvService.save(cv);
-        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponeAccount("yes",cv.getId()), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
