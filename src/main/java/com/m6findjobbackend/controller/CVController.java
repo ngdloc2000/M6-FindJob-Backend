@@ -2,8 +2,6 @@ package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.CV;
-import com.m6findjobbackend.model.City;
-import com.m6findjobbackend.model.Company;
 import com.m6findjobbackend.service.CV.CVService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,11 +23,11 @@ public class CVController {
     }
 
     @PostMapping("")
-    public ResponseEntity<?> createCV(@RequestBody CV cv){
-        if(cv.getFileCV()==null){
+    public ResponseEntity<?> createCV(@RequestBody CV cv) {
+        if (cv.getFileCV() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
-        if(cv.getSalaryExpectation()==null){
+        if (cv.getSalaryExpectation() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
         cvService.save(cv);
@@ -37,16 +35,16 @@ public class CVController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<?> updateCV(@PathVariable Long id, @RequestBody CV cv){
+    public ResponseEntity<?> updateCV(@PathVariable Long id, @RequestBody CV cv) {
         Optional<CV> cv1 = cvService.findById(id);
-        if(!cv1.isPresent()){
+        if (!cv1.isPresent()) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
-        if(cv.getFileCV()==null){
+        if (cv.getFileCV() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
-        if(cv.getSalaryExpectation()==null){
+        if (cv.getSalaryExpectation() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
 

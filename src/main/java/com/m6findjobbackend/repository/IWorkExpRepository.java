@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IWorkExpRepository extends JpaRepository<WorkExp,Long> {
+    Iterable<WorkExp> findAllByCv_Id(Long id);
 }

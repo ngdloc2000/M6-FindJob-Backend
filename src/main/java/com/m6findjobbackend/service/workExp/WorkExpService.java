@@ -38,4 +38,9 @@ public class WorkExpService implements IWorkExpService{
     public Optional<WorkExp> findById(Long id) {
         return workExpRepository.findById(id);
     }
+
+    @Override
+    public Iterable<WorkExp> findAllByCv_Id(Long id) {
+        return workExpRepository.findAllByCv_Id(id);
+    }
 }

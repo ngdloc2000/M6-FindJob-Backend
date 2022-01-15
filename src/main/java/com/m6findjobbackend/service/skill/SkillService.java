@@ -38,4 +38,9 @@ public class SkillService implements ISkillService{
     public Optional<Skill> findById(Long id) {
         return skillRepository.findById(id);
     }
+
+    @Override
+    public Iterable<Skill> findAllSkillsByCvId(Long id) {
+        return skillRepository.findAllByCv_Id(id);
+    }
 }
