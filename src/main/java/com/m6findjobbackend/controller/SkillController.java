@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -66,5 +67,11 @@ public class SkillController {
         }
         skillService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+
+    @GetMapping("/cv/{id}")
+    public ResponseEntity<?> findSkillByCvId(@PathVariable Long id) {
+        List<Skill> skill = (List<Skill>) skillService.findAllSkillsByCvId(id);
+        return new ResponseEntity<>(skill, HttpStatus.OK);
     }
 }

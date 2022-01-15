@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class CVService implements ISVService{
+public class CVService implements ICVService {
     @Autowired
     ICVRepository icvRepository;
 

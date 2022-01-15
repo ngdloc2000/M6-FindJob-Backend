@@ -31,7 +31,7 @@ public class WorkExpController {
     }
 
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> createWorkExp(@RequestBody WorkExp workExp) {
         if (workExp.getTitle() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_title"), HttpStatus.OK);
@@ -90,4 +90,9 @@ public class WorkExpController {
         return new ResponseEntity<>(workExp, HttpStatus.OK);
     }
 
+    @GetMapping("/cv/{id}")
+    public ResponseEntity<?> findWorkingByCvId(Long id) {
+        List<WorkExp> workExps = (List<WorkExp>) workExpService.findAllByCv_Id(id);
+        return new ResponseEntity<>(workExps, HttpStatus.OK);
+    }
 }

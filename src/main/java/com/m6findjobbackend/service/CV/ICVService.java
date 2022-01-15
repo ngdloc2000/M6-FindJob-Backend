@@ -6,6 +6,5 @@ import com.m6findjobbackend.service.IGeneralService;
 
 import java.util.Optional;
 
-public interface ISVService extends IGeneralService<CV> {
-
+public interface ICVService extends IGeneralService<CV> {
 }
