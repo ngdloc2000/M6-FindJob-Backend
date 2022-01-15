@@ -31,7 +31,7 @@ public class WorkExpController {
     }
 
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> createWorkExp(@RequestBody WorkExp workExp) {
         if (workExp.getTitle() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_title"), HttpStatus.OK);
