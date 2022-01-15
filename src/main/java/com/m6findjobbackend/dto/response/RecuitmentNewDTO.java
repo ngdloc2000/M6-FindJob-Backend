@@ -16,6 +16,15 @@ public class RecuitmentNewDTO {
     private Long workingTimeId;
     private String workingTimeName;
     private String avatar;
+    private Integer salary;
+
+    public Integer getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Integer salary) {
+        this.salary = salary;
+    }
 
     public Long getId() {
         return id;
