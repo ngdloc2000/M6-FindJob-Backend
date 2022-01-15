@@ -43,4 +43,8 @@ public class CVService implements ICVService {
     public Boolean existsByUserId(Long idUser) {
         return icvRepository.existsByUserId(idUser);
     }
+    @Override
+    public Optional<CV> findByUserId(Long id) {
+        return icvRepository.findByUserId(id);
+    }
 }

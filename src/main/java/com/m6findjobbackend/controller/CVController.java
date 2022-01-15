@@ -37,11 +37,11 @@ public class CVController {
         if (cv.getFileCV() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
         }
-        if(cv.getSalaryExpectation()==null){
+        if (cv.getSalaryExpectation() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_SalaryExpectation_cv"), HttpStatus.OK);
         }
         cvService.save(cv);
-        return new ResponseEntity<>(new ResponeAccount("yes",cv.getId()), HttpStatus.OK);
+        return new ResponseEntity<>(new ResponeAccount("yes", cv.getId()), HttpStatus.OK);
     }
 
     @PutMapping("{id}")
@@ -84,9 +84,10 @@ public class CVController {
         cvService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
-    @PostMapping("/test")
-    public ResponseEntity<?> test(@RequestBody CvDTO cvDTO){
-        CV cv =  cvService.save(cvDTO.getCv());
+
+    @PostMapping("/createCV")
+    public ResponseEntity<?> test(@RequestBody CvDTO cvDTO) {
+        CV cv = cvService.save(cvDTO.getCv());
         for (int i = 0; i < cvDTO.getSkills().size(); i++) {
             cvDTO.getSkills().get(i).setCv(cv);
             skillService.save(cvDTO.getSkills().get(i));
@@ -95,7 +96,14 @@ public class CVController {
             cvDTO.getWorkExps().get(i).setCv(cv);
             workExpService.save(cvDTO.getWorkExps().get(i));
         }
-        return new ResponseEntity<>(cvDTO,HttpStatus.OK);
+        return new ResponseEntity<>(cvDTO, HttpStatus.OK);
+    }
+
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> findByUserId(@PathVariable Long id) {
+        Optional<CV> cv = cvService.findByUserId(id);
+        return new ResponseEntity<>(cv, HttpStatus.OK);
     }
 
 }
