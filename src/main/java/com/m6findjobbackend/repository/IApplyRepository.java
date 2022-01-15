@@ -1,10 +1,9 @@
 package com.m6findjobbackend.repository;
 
-import com.m6findjobbackend.model.CV;
+import com.m6findjobbackend.model.Apply;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ICVRepository extends JpaRepository<CV,Long> {
-    Boolean existsByUserId(Long idUser);
+public interface IApplyRepository extends JpaRepository<Apply, Long> {
 }
