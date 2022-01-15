@@ -75,4 +75,10 @@ public class CVController {
         cvService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
+
+    @GetMapping("/user/{id}")
+    public ResponseEntity<?> findByUserId(@PathVariable Long id) {
+        Optional<CV> cv = cvService.findByUserId(id);
+        return new ResponseEntity<>(cv, HttpStatus.OK);
+    }
 }
