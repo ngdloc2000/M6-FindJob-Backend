@@ -37,7 +37,6 @@ public class CompanyController {
 
         if (companyService.existsByName(company.getName())) {
             return new ResponseEntity<>(new ResponseMessage("no_name_category"), HttpStatus.OK);
-
         }
         //tao codeCompany
         String nameex = company.getName().substring(0, 3);
@@ -98,6 +97,12 @@ public class CompanyController {
         if (editCompany.getPhone() != null) {
             company1.get().setPhone(editCompany.getPhone());
         }
+        //tao codeCompany
+        String nameex = company1.get().getName().substring(0, 3);
+        int min = 1000;
+        int max = 9999;
+        String codeCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
+        company1.get().setCodeCompany(nameex + company1.get().getAccount().getId() + codeCompany);
         companyService.save(company1.get());
         if (check == true) {
             return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
