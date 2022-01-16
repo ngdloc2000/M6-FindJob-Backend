@@ -2,12 +2,8 @@ package com.m6findjobbackend.controller;
 
 
 import com.m6findjobbackend.dto.request.SearchJob;
-import com.m6findjobbackend.dto.response.PageResponse;
-import com.m6findjobbackend.dto.response.RecuitmentNewDTO;
-import com.m6findjobbackend.dto.request.StatusRequest;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.RecuitmentNew;
-import com.m6findjobbackend.model.Status;
 import com.m6findjobbackend.service.recruitmentNew.RecruitmentNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +12,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -47,8 +42,9 @@ public class RecruitmentNewController {
         String nameex = recuitmentNew.getTitle().substring(0, 3);
         int min = 100;
         int max = 999;
-        String nameCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));;
-        recuitmentNew.setCodeNews(nameex + nameCompany );
+        String nameCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
+        ;
+        recuitmentNew.setCodeNews(nameex + nameCompany);
         System.out.println(recuitmentNew.getCodeNews());
         recuitmentNew.setStatus(true);
 
@@ -103,8 +99,8 @@ public class RecruitmentNewController {
     }
 
     @GetMapping("/showAll/{id}")
-    public ResponseEntity<?>findAllByCompany(@PathVariable Long id){
-        return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id),HttpStatus.OK);
+    public ResponseEntity<?> findAllByCompany(@PathVariable Long id) {
+        return new ResponseEntity<>(recruitmentNewService.findAllByCompany_Id(id), HttpStatus.OK);
     }
 
 
@@ -138,7 +134,6 @@ public class RecruitmentNewController {
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
-
 
     @PostMapping("/findByObj")
     public ResponseEntity<?> findByObj(@RequestBody SearchJob searchJob) {

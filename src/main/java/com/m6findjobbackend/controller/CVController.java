@@ -1,17 +1,23 @@
 package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.request.CvDTO;
+import com.m6findjobbackend.dto.request.SkillDTO;
 import com.m6findjobbackend.dto.response.ResponeAccount;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.CV;
+import com.m6findjobbackend.model.Skill;
+import com.m6findjobbackend.model.WorkExp;
 import com.m6findjobbackend.service.CV.CVService;
 import com.m6findjobbackend.service.skill.SkillService;
+import com.m6findjobbackend.service.user.UserService;
 import com.m6findjobbackend.service.workExp.WorkExpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -26,6 +32,9 @@ public class CVController {
 
     @Autowired
     WorkExpService workExpService;
+
+    @Autowired
+    UserService userService;
 
     @GetMapping("/showAll")
     public ResponseEntity<?> showAll() {
@@ -42,27 +51,6 @@ public class CVController {
         }
         cvService.save(cv);
         return new ResponseEntity<>(new ResponeAccount("yes", cv.getId()), HttpStatus.OK);
-    }
-
-    @PutMapping("{id}")
-    public ResponseEntity<?> updateCV(@PathVariable Long id, @RequestBody CV cv) {
-        Optional<CV> cv1 = cvService.findById(id);
-        if (!cv1.isPresent()) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        if (cv.getFileCV() == null) {
-            return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
-        }
-        if (cv.getSalaryExpectation() == null) {
-            return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
-        }
-
-        cv1.get().setFileCV(cv.getFileCV());
-        cv1.get().setExpYear(cv.getExpYear());
-        cv1.get().setSalaryExpectation(cv.getSalaryExpectation());
-        cvService.save(cv1.get());
-        return new ResponseEntity<>(cv1.get(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
@@ -85,25 +73,66 @@ public class CVController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
+    @PutMapping("{id}")
+    public ResponseEntity<?> updateCV(@PathVariable Long id, @RequestBody CvDTO cvDTO) {
+        Optional<CV> cv1 = cvService.findById(id);
+        if (!cv1.isPresent()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+//        if (cv.getFileCV() == null) {
+//            return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
+//        }
+//        if (cv.getSalaryExpectation() == null) {
+//            return new ResponseEntity<>(new ResponseMessage("no_file_cv"), HttpStatus.OK);
+//        }
+//        cv1.get().setFileCV(cv.getFileCV());
+//        cv1.get().setExpYear(cv.getExpYear());
+//        cv1.get().setSalaryExpectation(cv.getSalaryExpectation());
+        for (int i = 0; i < cvDTO.getSkills().size(); i++) {
+//            cvDTO.getSkills().get(i).setName();
+        }
+        cvService.save(cv1.get());
+        return new ResponseEntity<>(cv1.get(), HttpStatus.OK);
+    }
+
     @PostMapping("/createCV")
     public ResponseEntity<?> test(@RequestBody CvDTO cvDTO) {
-        CV cv = cvService.save(cvDTO.getCv());
+        CV cv1 = new CV();
+        cv1.toEntity(cvDTO);
+        cv1.setUser(userService.findById(cvDTO.getUserId()).get());
+        CV cv2 = cvService.save(cv1);
+        List<Skill> skills = new ArrayList<>();
         for (int i = 0; i < cvDTO.getSkills().size(); i++) {
-            cvDTO.getSkills().get(i).setCv(cv);
-            skillService.save(cvDTO.getSkills().get(i));
+            Skill skill = new Skill();
+            Skill skill1 = skill.toEntity(cvDTO.getSkills().get(i));
+            skill1.setCv(cv2);
+            skillService.save(skill1);
+            skills.add(skill1);
         }
+
+        List<WorkExp> workExps = new ArrayList<>();
         for (int i = 0; i < cvDTO.getWorkExps().size(); i++) {
-            cvDTO.getWorkExps().get(i).setCv(cv);
-            workExpService.save(cvDTO.getWorkExps().get(i));
+            WorkExp workExp = new WorkExp();
+            WorkExp workExp1 = workExp.toEntity(cvDTO.getWorkExps().get(i));
+            workExp1.setCv(cv2);
+            workExpService.save(workExp1);
+            workExps.add(workExp1);
         }
-        return new ResponseEntity<>(cvDTO, HttpStatus.OK);
+
+        cv1.setSkills(skills);
+        cv1.setWorkExps(workExps);
+        CvDTO cvDTO1 = cv1.toDto(cv1);
+        return new ResponseEntity<>(cvDTO1, HttpStatus.OK);
     }
 
 
     @GetMapping("/user/{id}")
     public ResponseEntity<?> findByUserId(@PathVariable Long id) {
         Optional<CV> cv = cvService.findByUserId(id);
+        if (cv.isPresent()) {
+            return new ResponseEntity<>(cv.get().toDto(cv.get()), HttpStatus.OK);
+        }
         return new ResponseEntity<>(cv, HttpStatus.OK);
     }
-
 }
