@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -46,7 +47,7 @@ public class CompanyController {
         System.out.println(codeCompany);
         company.setCodeCompany(nameex + company.getAccount().getId() + codeCompany);
         //
-        company.setStatusCompany(Status.NON_ACTIVE);
+        company.setStatusCompany(Status.HOT);
         if (company.getAvatar() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
         }
@@ -161,5 +162,10 @@ public class CompanyController {
         }
         companyService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/findByStatus/{status}")
+    public ResponseEntity<?> findByStatus(@PathVariable Integer status){
+        List<Company> companyList = companyService.findCompanyByStatus(status);
+        return new ResponseEntity<>(companyList,HttpStatus.OK);
     }
 }
