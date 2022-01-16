@@ -7,6 +7,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +48,10 @@ public class CompanyService implements ICompanyService {
     @Override
     public Boolean existsByName(String name) {
         return iCompanyRepository.existsByName(name);
+    }
+
+    @Override
+    public List<Company> findCompanyByStatus(Integer stt) {
+        return iCompanyRepository.findCompanyByStatus(stt);
     }
 }
