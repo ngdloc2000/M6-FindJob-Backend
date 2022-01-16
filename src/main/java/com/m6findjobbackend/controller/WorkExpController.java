@@ -91,7 +91,7 @@ public class WorkExpController {
     }
 
     @GetMapping("/cv/{id}")
-    public ResponseEntity<?> findWorkingByCvId(Long id) {
+    public ResponseEntity<?> findWorkingByCvId(@PathVariable Long id) {
         List<WorkExp> workExps = (List<WorkExp>) workExpService.findAllByCv_Id(id);
         return new ResponseEntity<>(workExps, HttpStatus.OK);
     }
