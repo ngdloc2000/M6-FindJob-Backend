@@ -141,6 +141,17 @@ public class AuthController {
 
     //
 //    }
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable Long id) {
+        Optional<Account> account = accountService.findById(id);
+        System.out.println(account.get().getStatus());
+        if (!account.isPresent()) {
+            return new ResponseEntity<>(new ResponseMessage("Không có user này"), HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(account.get().getStatus(), HttpStatus.OK);
+    }
+
+
     @GetMapping("/verify/{id}")
     public ResponseEntity<Account> verifyAccount(@PathVariable Long id) {
         Optional<Account> account = accountService.findById(id);

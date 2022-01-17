@@ -51,7 +51,7 @@ public class UserController {
         }
         User user1 =  userSevice.save(user);
         Account account = accountService.findById(user.getAccount().getId()).get();
-        MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Vui lòng nhấn vào đây để xác nhận tài khoản: " + "\n http://localhost:8080/verify/"+user1.getId() );
+        MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Vui lòng nhấn vào đây để xác nhận tài khoản: " + "\n http://localhost:4200/active-status/"+account.getId() );
         emailService.sendSimpleMessage(mailObject1);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
