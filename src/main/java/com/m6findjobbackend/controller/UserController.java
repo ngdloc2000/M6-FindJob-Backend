@@ -3,7 +3,10 @@ package com.m6findjobbackend.controller;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.Account;
 import com.m6findjobbackend.model.User;
+import com.m6findjobbackend.model.email.MailObject;
 import com.m6findjobbackend.security.userprincipal.UserDetailServices;
+import com.m6findjobbackend.service.account.AccountService;
+import com.m6findjobbackend.service.email.EmailServiceImpl;
 import com.m6findjobbackend.service.user.IUserSevice;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,12 @@ public class UserController {
     private IUserSevice userSevice;
     @Autowired
     private UserDetailServices userDetailServices;
+
+    @Autowired
+    EmailServiceImpl emailService;
+
+    @Autowired
+    AccountService accountService;
 
     @GetMapping
     public ResponseEntity<Iterable<User>> findAll() {
@@ -40,7 +49,10 @@ public class UserController {
         if (user.getName() == null) {
             return new ResponseEntity<>(new ResponseMessage("name_null"), HttpStatus.OK);
         }
-        userSevice.save(user);
+        User user1 =  userSevice.save(user);
+        Account account = accountService.findById(user.getAccount().getId()).get();
+        MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Vui lòng nhấn vào đây để xác nhận tài khoản: " + "\n http://localhost:8080/verify/"+user1.getId() );
+        emailService.sendSimpleMessage(mailObject1);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 

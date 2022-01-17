@@ -1,5 +1,6 @@
 package com.m6findjobbackend.service.user;
 
+import com.m6findjobbackend.dto.request.UsernameAndPasswordUser;
 import com.m6findjobbackend.model.User;
 import com.m6findjobbackend.repository.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,5 +47,10 @@ public class UserService implements IUserSevice{
     @Override
     public Boolean existsByName(String name) {
         return userRepository.existsByName(name);
+    }
+
+    @Override
+    public UsernameAndPasswordUser findUsernameAndPassword(Long id) {
+        return null;
     }
 }
