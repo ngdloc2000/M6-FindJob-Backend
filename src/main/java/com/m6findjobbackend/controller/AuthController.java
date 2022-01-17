@@ -83,12 +83,12 @@ public class AuthController {
                     int max = 99999999;
                     String passwordNew = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
                     account.setPassword(passwordEncoder.encode(passwordNew));
-                    MailObject mailObject = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + passwordNew );
+                    MailObject mailObject = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là:"+" \nusername:" +account.getUsername() + "\npassword: " + passwordNew );
                     emailService.sendSimpleMessage(mailObject);
                     break;
                 default:
                     Role userRole = roleService.findByName(RoleName.USER).orElseThrow( ()-> new RuntimeException("Role not found"));
-                    MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là: username: " +account.getUsername() + "\npassword: " + passwordOld );
+                    MailObject mailObject1 = new MailObject("findJob@job.com",account.getUsername(), "Account Tinder Windy Verified", "Tài khoản của bạn là:"+" \nusername:" +account.getUsername() + "\npassword: " + passwordOld  );
                     emailService.sendSimpleMessage(mailObject1);
                     roles.add(userRole);
             }
