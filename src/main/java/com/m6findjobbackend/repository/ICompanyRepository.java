@@ -1,5 +1,6 @@
 package com.m6findjobbackend.repository;
 
+import com.m6findjobbackend.dto.response.CompanyRecruitmentNeed;
 import com.m6findjobbackend.model.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,6 +18,8 @@ public interface ICompanyRepository extends JpaRepository<Company, Long> {
     @Query(value = "select c.* from company c where c.status_company = :stt limit 3;",nativeQuery = true)
     List<Company> findCompanyByStatus(@Param("stt") Integer stt);
 
+    @Query(value = "select c.id as id,c.avatar as avatar,c.name as name, count(r.id) as count from company c join recuitmentnew r on c.id = r.company_id group by c.id order by count DESC limit 3;", nativeQuery = true)
+    List<CompanyRecruitmentNeed> findCompanyByRecuitmentNew();
 
 
 }

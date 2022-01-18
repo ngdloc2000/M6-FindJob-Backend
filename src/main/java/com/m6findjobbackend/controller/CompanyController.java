@@ -2,6 +2,7 @@ package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.request.EditCompany;
 import com.m6findjobbackend.dto.request.StatusRequest;
+import com.m6findjobbackend.dto.response.CompanyRecruitmentNeed;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.Account;
 import com.m6findjobbackend.model.Company;
@@ -167,5 +168,11 @@ public class CompanyController {
     public ResponseEntity<?> findByStatus(@PathVariable Integer status){
         List<Company> companyList = companyService.findCompanyByStatus(status);
         return new ResponseEntity<>(companyList,HttpStatus.OK);
+    }
+
+    @GetMapping("/findByRecuitmentNewNeed")
+    public ResponseEntity<?> findByRecuitmentNewNeed(){
+        List<CompanyRecruitmentNeed> recruitmentNeedList = companyService.findCompanyByRecuitmentNew();
+        return new ResponseEntity<>(recruitmentNeedList,HttpStatus.OK);
     }
 }
