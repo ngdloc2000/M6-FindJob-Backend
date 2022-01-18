@@ -168,4 +168,5 @@ public class CompanyController {
         List<Company> companyList = companyService.findCompanyByStatus(status);
         return new ResponseEntity<>(companyList,HttpStatus.OK);
     }
+
 }

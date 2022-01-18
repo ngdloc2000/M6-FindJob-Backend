@@ -162,4 +162,5 @@ public class AuthController {
         accountService.save(account.get());
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
+
 }
