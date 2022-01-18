@@ -16,7 +16,7 @@ public class AccountService implements IAccountService{
 
     @Override
     public Iterable<Account> findAll() {
-        return null;
+        return accountRepository.findAll();
     }
 
     @Override

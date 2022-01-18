@@ -162,4 +162,10 @@ public class AuthController {
         accountService.save(account.get());
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
+
+    @GetMapping("/showAllAccount")
+    public ResponseEntity<?> showAllAccount(){
+        Iterable<Account> accounts = accountService.findAll();
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
 }

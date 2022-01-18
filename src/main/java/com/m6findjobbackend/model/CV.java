@@ -69,7 +69,6 @@ public class CV {
 
     public CV toEntity(CvDTO cvDTO) {
         CV cv = new CV();
-        cv.setId(cvDTO.getId());
         cv.setSalaryExpectation(cvDTO.getSalaryExpectation());
         cv.setExpYear(cvDTO.getExpYear());
         cv.setFileCV(cvDTO.getFileCV());
