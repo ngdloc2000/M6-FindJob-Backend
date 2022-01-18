@@ -52,7 +52,8 @@ public class IRecruitmentNewDAOImpl implements IRecruitmentNewDAO {
                 .addValue("vacancies", searchJob.getVacancies())
                 .addValue("workingTimeId", searchJob.getWorkingTimeId())
                 .addValue("start", searchJob.getStart())
-                .addValue("page_size", searchJob.getPageSize());
+                .addValue("page_size", searchJob.getPageSize())
+                .addValue("salary", searchJob.getSalary());
         Map out = simpleJdbcCall.execute(in);
         return (List<RecuitmentNewDTO>) out.get("recuitmentnew");
     }

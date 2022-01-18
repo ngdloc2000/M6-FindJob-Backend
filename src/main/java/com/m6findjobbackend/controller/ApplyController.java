@@ -76,5 +76,4 @@ public class ApplyController {
         emailService.sendSimpleMessage(mailObject);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
-
 }
