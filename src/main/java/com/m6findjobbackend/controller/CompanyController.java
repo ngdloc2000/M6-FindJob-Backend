@@ -2,6 +2,7 @@ package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.request.EditCompany;
 import com.m6findjobbackend.dto.request.StatusRequest;
+import com.m6findjobbackend.dto.response.CompanyRecruitmentNeed;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.Account;
 import com.m6findjobbackend.model.Company;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @CrossOrigin(origins = "*")
@@ -37,7 +39,6 @@ public class CompanyController {
 
         if (companyService.existsByName(company.getName())) {
             return new ResponseEntity<>(new ResponseMessage("no_name_category"), HttpStatus.OK);
-
         }
         //tao codeCompany
         String nameex = company.getName().substring(0, 3);
@@ -47,7 +48,7 @@ public class CompanyController {
         System.out.println(codeCompany);
         company.setCodeCompany(nameex + company.getAccount().getId() + codeCompany);
         //
-        company.setStatusCompany(Status.NON_ACTIVE);
+        company.setStatusCompany(Status.HOT);
         if (company.getAvatar() == null) {
             return new ResponseEntity<>(new ResponseMessage("no_avatar_category"), HttpStatus.OK);
         }
@@ -98,6 +99,12 @@ public class CompanyController {
         if (editCompany.getPhone() != null) {
             company1.get().setPhone(editCompany.getPhone());
         }
+        //tao codeCompany
+        String nameex = company1.get().getName().substring(0, 3);
+        int min = 1000;
+        int max = 9999;
+        String codeCompany = String.valueOf((int) Math.floor(Math.round((Math.random() * (max - min + 1) + min))));
+        company1.get().setCodeCompany(nameex + company1.get().getAccount().getId() + codeCompany);
         companyService.save(company1.get());
         if (check == true) {
             return new ResponseEntity<>(new ResponseMessage("trung ten roi"), HttpStatus.OK);
@@ -156,5 +163,16 @@ public class CompanyController {
         }
         companyService.deleteById(id);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
+    @GetMapping("/findByStatus/{status}")
+    public ResponseEntity<?> findByStatus(@PathVariable Integer status){
+        List<Company> companyList = companyService.findCompanyByStatus(status);
+        return new ResponseEntity<>(companyList,HttpStatus.OK);
+    }
+
+    @GetMapping("/findByRecuitmentNewNeed")
+    public ResponseEntity<?> findByRecuitmentNewNeed(){
+        List<CompanyRecruitmentNeed> recruitmentNeedList = companyService.findCompanyByRecuitmentNew();
+        return new ResponseEntity<>(recruitmentNeedList,HttpStatus.OK);
     }
 }
