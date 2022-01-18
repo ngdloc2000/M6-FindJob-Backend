@@ -99,7 +99,7 @@ public class CVController {
     @PostMapping("/createCV")
     public ResponseEntity<?> test(@RequestBody CvDTO cvDTO) {
         CV cv1 = new CV();
-        cv1.toEntity(cvDTO);
+        cv1 = cv1.toEntity(cvDTO);
         cv1.setUser(userService.findById(cvDTO.getUserId()).get());
         CV cv2 = cvService.save(cv1);
         List<Skill> skills = new ArrayList<>();
