@@ -1,5 +1,6 @@
 package com.m6findjobbackend.service.company;
 
+import com.m6findjobbackend.dto.response.CompanyRecruitmentNeed;
 import com.m6findjobbackend.model.Company;
 import com.m6findjobbackend.repository.ICompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,5 +54,10 @@ public class CompanyService implements ICompanyService {
     @Override
     public List<Company> findCompanyByStatus(Integer stt) {
         return iCompanyRepository.findCompanyByStatus(stt);
+    }
+
+    @Override
+    public List<CompanyRecruitmentNeed> findCompanyByRecuitmentNew() {
+        return iCompanyRepository.findCompanyByRecuitmentNew();
     }
 }
