@@ -43,4 +43,14 @@ public class SkillService implements ISkillService{
     public Iterable<Skill> findAllSkillsByCvId(Long id) {
         return skillRepository.findAllByCv_Id(id);
     }
+
+    @Override
+    public Boolean existsByCv_Id(Long id) {
+        return skillRepository.existsByCv_Id(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return skillRepository.existsById(id);
+    }
 }

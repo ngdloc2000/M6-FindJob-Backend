@@ -83,14 +83,26 @@ public class ApplyController {
         emailService.sendSimpleMessage(mailObject);
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
+
     @GetMapping("/findAllByCompanyID/{id}")
-    public ResponseEntity<?> findAllByCompany(@PageableDefault(direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long id){
-        Page<ApplyShowAll> list = applyService.findAllByCompanyId(pageable,id);
+    public ResponseEntity<?> findAllByCompany(@PageableDefault(direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long id) {
+        Page<ApplyShowAll> list = applyService.findAllByCompanyId(pageable, id);
         if (list.isEmpty()) {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
     }
+
+
+    @GetMapping("/showAllApply/{id}")
+    public ResponseEntity<?>showAllApplyById(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long id){
+        Page<Apply> list = applyService.findAllByUserId(pageable,id);
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
     @PostMapping("/changeStatusApply")
     public ResponseEntity<?> changeStatusApply(@RequestBody ChangeStatusApply changeStatusApply ){
         Apply apply = applyService.findById(changeStatusApply.getId()).get();
