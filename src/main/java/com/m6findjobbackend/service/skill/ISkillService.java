@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface ISkillService extends IGeneralService<Skill> {
     Iterable<Skill> findAllSkillsByCvId(Long id);
+    Boolean existsByCv_Id(Long id);
+    boolean existsById(Long id);
 }

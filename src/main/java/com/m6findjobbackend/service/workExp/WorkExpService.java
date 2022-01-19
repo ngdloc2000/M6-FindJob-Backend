@@ -43,4 +43,9 @@ public class WorkExpService implements IWorkExpService{
     public Iterable<WorkExp> findAllByCv_Id(Long id) {
         return workExpRepository.findAllByCv_Id(id);
     }
+
+    @Override
+    public Boolean existsByCv_Id(Long id) {
+        return workExpRepository.existsByCv_Id(id);
+    }
 }
