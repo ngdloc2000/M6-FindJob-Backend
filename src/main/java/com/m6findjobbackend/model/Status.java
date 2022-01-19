@@ -7,5 +7,6 @@ public enum Status {
     UNLOCK,
     HOT,
     WAIT,
-    REJECT
+    REJECT,
+    APCEPT
 }
