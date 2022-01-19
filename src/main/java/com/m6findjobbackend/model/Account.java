@@ -1,9 +1,7 @@
 package com.m6findjobbackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -27,8 +25,9 @@ public class Account {
     private String password;
     @JsonIgnore
     @Enumerated(EnumType.STRING)
-    @NaturalId(mutable=true)
+    @NaturalId(mutable = true)
     private Status status;
+    private Boolean status2;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "account_role",
             joinColumns = @JoinColumn(name = "account_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
@@ -39,6 +38,15 @@ public class Account {
         this.username = username;
         this.password = password;
         this.status = status;
+        this.roles = roles;
+    }
+
+    public Account(Long id, String username, String password, Status status, Boolean status2, Set<Role> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.status = status;
+        this.status2 = status2;
         this.roles = roles;
     }
 
@@ -102,5 +110,19 @@ public class Account {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Boolean getStatus2() {
+        return status2;
+    }
+
+    public void setStatus2(Boolean status2) {
+        if (status.equals(Status.NON_ACTIVE)) {
+            this.status2 = false;
+
+        } else {
+            this.status2 = true;
+        }
+
     }
 }

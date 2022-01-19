@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -101,8 +102,11 @@ public class AuthController {
     }
 
 
+
+
     @PostMapping("/signin")
     public ResponseEntity<?> login(@RequestBody SignInForm signInForm) {
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(signInForm.getUsername(), signInForm.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -111,6 +115,11 @@ public class AuthController {
         Long id = ((UserPrinciple) authentication.getPrincipal()).getId();
         String a = authentication.getAuthorities().toString();
         Long idCustom = -1L;
+//        System.out.println("dinh " + userPrinciple.getStatus().);
+
+        if (userPrinciple.getStatus().equalsIgnoreCase(String.valueOf(Status.NON_ACTIVE))){
+            return new ResponseEntity<>(new ResponseMessage("LOCK"),HttpStatus.OK);
+        }
         if (a.equals("[COMPANY]")) {
             Optional<Company> company = companyService.findAllByAccount_Id(id);
             idCustom = company.get().getId();
@@ -122,6 +131,7 @@ public class AuthController {
         if (a.equals("[ADMIN]")) {
             idCustom = -10L;
         }
+
 
         return ResponseEntity.ok(new JwtResponse(id, idCustom, token, userPrinciple.getUsername(), userPrinciple.getAuthorities()));
     }
@@ -163,4 +173,32 @@ public class AuthController {
         return new ResponseEntity<>(account.get(), HttpStatus.OK);
     }
 
+
+    @GetMapping("/showAllAccount")
+    public ResponseEntity<?> showAllAccount(){
+        List<Account> accounts = (List<Account>) accountService.findAll();
+        for (int i = 0; i <accounts.size(); i++) {
+            if (accounts.get(i).getStatus().equals(Status.NON_ACTIVE)){
+                accounts.get(i).setStatus2(false);
+            } else {
+                accounts.get(i).setStatus2(true);
+            }
+        }
+        return new ResponseEntity<>(accounts, HttpStatus.OK);
+    }
+
+    @PutMapping("/editStatusAccount/{id}")
+    public ResponseEntity<?> editStatus(@PathVariable Long id) {
+        Optional<Account> accountOptional = accountService.findById(id);
+        if (accountOptional.get().getStatus().equals(Status.NON_ACTIVE)) {
+            accountOptional.get().setStatus2(true);
+            accountOptional.get().setStatus(Status.ACTIVE);
+        } else {
+            accountOptional.get().setStatus2(false);
+            accountOptional.get().setStatus(Status.NON_ACTIVE);
+
+        }
+        accountService.save(accountOptional.get());
+        return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
+    }
 }
