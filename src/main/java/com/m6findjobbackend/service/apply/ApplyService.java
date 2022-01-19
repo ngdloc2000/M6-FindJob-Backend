@@ -37,4 +37,9 @@ public class ApplyService implements IApplyService {
     public Optional<Apply> findById(Long id) {
         return applyRepository.findById(id);
     }
+
+    @Override
+    public Page<Apply> findAllByUserId(Pageable pageable, Long id) {
+        return applyRepository.findAllByUser_Id(pageable,id);
+    }
 }
