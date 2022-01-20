@@ -65,6 +65,7 @@ public class RecruitmentNewService implements IRecruitmentNewService {
                 searchJob.getVacancies(),
                 searchJob.getWorkingTimeId(),
                 searchJob.getSalary()));
+
         return pageResponse;
     }
 

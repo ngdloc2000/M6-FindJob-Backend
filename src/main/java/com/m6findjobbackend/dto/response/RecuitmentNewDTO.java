@@ -1,5 +1,7 @@
 package com.m6findjobbackend.dto.response;
 
+import java.time.LocalDate;
+
 public class RecuitmentNewDTO {
     private Long id;
     private String title;
@@ -17,6 +19,15 @@ public class RecuitmentNewDTO {
     private String workingTimeName;
     private String avatar;
     private Integer salary;
+    private String expDate;
+
+    public String getExpDate() {
+        return expDate;
+    }
+
+    public void setExpDate(String expDate) {
+        this.expDate = expDate;
+    }
 
     public Integer getSalary() {
         return salary;
