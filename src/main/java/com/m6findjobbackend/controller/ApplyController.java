@@ -118,6 +118,7 @@ public class ApplyController {
                 System.out.println(Status.APCEPT);
                 System.out.println(statusold);
                 if(statusold.equals("APCEPT")){
+
                     check = true;
                 }
             }
