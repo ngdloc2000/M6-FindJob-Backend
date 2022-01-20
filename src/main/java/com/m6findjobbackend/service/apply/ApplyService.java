@@ -1,5 +1,6 @@
 package com.m6findjobbackend.service.apply;
 
+import com.m6findjobbackend.dto.response.ApplyShowAll;
 import com.m6findjobbackend.model.Apply;
 import com.m6findjobbackend.repository.IApplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,11 @@ public class ApplyService implements IApplyService {
     @Override
     public Optional<Apply> findById(Long id) {
         return applyRepository.findById(id);
+    }
+
+    @Override
+    public Page<ApplyShowAll> findAllByCompanyId(Pageable page, Long id) {
+        return applyRepository.findAllByCompanyId(page,id);
     }
 
     @Override

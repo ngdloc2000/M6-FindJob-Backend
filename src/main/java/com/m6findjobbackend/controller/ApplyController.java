@@ -2,6 +2,7 @@ package com.m6findjobbackend.controller;
 
 import com.m6findjobbackend.dto.request.ApplyJob;
 import com.m6findjobbackend.dto.request.ForwardApply;
+import com.m6findjobbackend.dto.response.ApplyShowAll;
 import com.m6findjobbackend.dto.response.ResponseMessage;
 import com.m6findjobbackend.model.*;
 import com.m6findjobbackend.model.email.MailObject;
@@ -23,6 +24,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin("*")
@@ -81,6 +84,16 @@ public class ApplyController {
         return new ResponseEntity<>(new ResponseMessage("yes"), HttpStatus.OK);
     }
 
+    @GetMapping("/findAllByCompanyID/{id}")
+    public ResponseEntity<?> findAllByCompany(@PageableDefault(direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long id) {
+        Page<ApplyShowAll> list = applyService.findAllByCompanyId(pageable, id);
+        if (list.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+
     @GetMapping("/showAllApply/{id}")
     public ResponseEntity<?>showAllApplyById(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,@PathVariable Long id){
         Page<Apply> list = applyService.findAllByUserId(pageable,id);
@@ -88,5 +101,45 @@ public class ApplyController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<>(list, HttpStatus.OK);
+    }
+
+    @PostMapping("/changeStatusApply")
+    public ResponseEntity<?> changeStatusApply(@RequestBody ChangeStatusApply changeStatusApply ){
+        Apply apply = applyService.findById(changeStatusApply.getId()).get();
+        boolean check = false;
+        List<Apply> applyList = (List<Apply>) applyService.findAll();
+        for (Apply apply1 : applyList ) {
+            if(apply1.getUser().getId() == apply.getUser().getId()){
+                String statusold = String.valueOf(apply1.getStatus());
+                System.out.println(Status.APCEPT);
+                System.out.println(statusold);
+                if(statusold.equals("APCEPT")){
+                    check = true;
+                }
+            }
+        }
+        if(changeStatusApply.getStatus() == 1){
+            if(check){
+                return new ResponseEntity<>(new ResponseMessage("NHân viễn đã được apcept bởi công ty khác"), HttpStatus.OK);
+            }
+            apply.setStatus(Status.APCEPT);
+            applyService.save(apply);
+            return new ResponseEntity<>(new ResponseMessage("NHân viễn đã được apcept thành công"), HttpStatus.OK);
+
+        }
+        if(changeStatusApply.getStatus() == 0){
+            apply.setStatus(Status.REJECT);
+            applyService.save(apply);
+            return new ResponseEntity<>(new ResponseMessage("Bạn đã từ chối thành công"), HttpStatus.OK);
+
+        }
+        if(changeStatusApply.getStatus() == 2){
+            apply.setStatus(Status.WAIT);
+            applyService.save(apply);
+            return new ResponseEntity<>(new ResponseMessage("Bạn đã đổi trạng thái thành công"), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(new ResponseMessage("Bạn đã đổi trạng thái thất bại"), HttpStatus.OK);
+        }
     }
 }

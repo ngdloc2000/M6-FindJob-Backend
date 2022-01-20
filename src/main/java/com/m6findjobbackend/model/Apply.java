@@ -22,7 +22,7 @@ public class Apply {
     @ManyToOne(targetEntity = RecuitmentNew.class)
     private RecuitmentNew recuitmentNew;
     @Enumerated(EnumType.STRING)
-    @NaturalId
+    @NaturalId(mutable=true)
     private Status status;
     private LocalDate date;
 }
