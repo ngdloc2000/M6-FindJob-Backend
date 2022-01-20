@@ -118,7 +118,6 @@ public class ApplyController {
                 System.out.println(Status.APCEPT);
                 System.out.println(statusold);
                 if(statusold.equals("APCEPT")){
-
                     check = true;
                 }
             }
@@ -129,12 +128,21 @@ public class ApplyController {
             }
             apply.setStatus(Status.APCEPT);
             applyService.save(apply);
+            Company companyCurrent = apply.getRecuitmentNew().getCompany();
+            User userCurrent = apply.getUser();
+            LocalDate dateApply = LocalDate.now().plusDays(3) ;
+            MailObject mailObject = new MailObject("findJob@job.com",userCurrent.getAccount().getUsername(), "Thông báo tuyển dụng", "Công ty " + companyCurrent.getName() + " đã chấp nhận đơn ứng tuyển của bạn " + userCurrent.getName() + ". Lịch phỏng vấn của bạn với công ty vào ngày " + dateApply +". Hãy liên hệ với công ty bạn ứng tuyển để biết thêm chi tiết !!");
+            emailService.sendSimpleMessage(mailObject);
             return new ResponseEntity<>(new ResponseMessage("Nhân viên đã được apcept thành công"), HttpStatus.OK);
 
         }
         if(changeStatusApply.getStatus() == 0){
             apply.setStatus(Status.REJECT);
             applyService.save(apply);
+            Company companyCurrent = apply.getRecuitmentNew().getCompany();
+            User userCurrent = apply.getUser();
+            MailObject mailObject = new MailObject("findJob@job.com",userCurrent.getAccount().getUsername(), "Thông báo tuyển dụng", "Công ty " + companyCurrent.getName() + " đã từ chối đơn ứng tuyển của bạn " + userCurrent.getName() + ". Chúc bạn may mắn lần sau ");
+            emailService.sendSimpleMessage(mailObject);
             return new ResponseEntity<>(new ResponseMessage("Bạn đã từ chối thành công"), HttpStatus.OK);
 
         }
