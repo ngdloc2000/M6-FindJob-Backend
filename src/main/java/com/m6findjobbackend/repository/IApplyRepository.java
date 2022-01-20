@@ -19,4 +19,6 @@ public interface IApplyRepository extends JpaRepository<Apply, Long> {
 
     Page<Apply> findAllByUser_Id(Pageable pageable, Long id);
 
+    boolean existsByUserIdAndRecuitmentNewId(Long userID, Long recuitmentID);
+
 }

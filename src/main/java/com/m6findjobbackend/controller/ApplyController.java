@@ -51,6 +51,10 @@ public class ApplyController {
 
     @PostMapping
     public ResponseEntity<?> createApply(@RequestBody ApplyJob applyJob) {
+        System.out.println(applyService.existsByUserIdAndRecuitmentNewId(applyJob.getUserId(),applyJob.getRecuitmentNewId()));
+        if(applyService.existsByUserIdAndRecuitmentNewId(applyJob.getUserId(),applyJob.getRecuitmentNewId())){
+            return new ResponseEntity<>(new ResponseMessage("MATCH"), HttpStatus.OK);
+        }
         if(icvService.existsByUserId(applyJob.getUserId())){
             LocalDate now = LocalDate.now();
             RecuitmentNew recuitmentNew = recruitmentNewService.findById(applyJob.getRecuitmentNewId()).get();
@@ -109,7 +113,7 @@ public class ApplyController {
         boolean check = false;
         List<Apply> applyList = (List<Apply>) applyService.findAll();
         for (Apply apply1 : applyList ) {
-            if(apply1.getUser().getId() == apply.getUser().getId()){
+            if(apply1.getUser().getId() == apply.getUser().getId() && apply1.getRecuitmentNew().getCompany().getId() == apply.getRecuitmentNew().getCompany().getId()){
                 String statusold = String.valueOf(apply1.getStatus());
                 System.out.println(Status.APCEPT);
                 System.out.println(statusold);

@@ -10,5 +10,6 @@ import org.springframework.data.repository.query.Param;
 public interface IApplyService  extends IGeneralService<Apply> {
     Page<ApplyShowAll> findAllByCompanyId(Pageable page, @Param("idCompany") Long id);
     Page<Apply> findAllByUserId(Pageable pageable, Long id);
+    boolean existsByUserIdAndRecuitmentNewId(Long userID, Long recuitmentID);
 
 }
