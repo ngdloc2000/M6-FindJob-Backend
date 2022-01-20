@@ -70,25 +70,38 @@ public class CVController {
         for (int i = 0; i < cvDTO.getSkills().size(); i++) {
             Skill skill = new Skill();
             Skill skill1 = skill.toEntity(cvDTO.getSkills().get(i));
-            Optional<Skill> skillOptional = skillService.findById(skill1.getId());
-            skillOptional.get().setCv(cv.get());
-            skillOptional.get().setName(skill1.getName());
-            skillOptional.get().setProficiency(skill1.getProficiency());
-            skillService.save(skillOptional.get());
-            skills.add(skillOptional.get());
+            if (!skillService.existsByCv_Id(skill1.getCv().getId())) {
+                skill1.setCv(cv.get());
+                skillService.save(skill1);
+                skills.add(skill1);
+            } else {
+                Optional<Skill> skillOptional = skillService.findById(skill1.getId());
+                skillOptional.get().setCv(cv.get());
+                skillOptional.get().setName(skill1.getName());
+                skillOptional.get().setProficiency(skill1.getProficiency());
+                skillService.save(skillOptional.get());
+                skills.add(skillOptional.get());
+            }
+
         }
         List<WorkExp> workExps = new ArrayList<>();
         for (int i = 0; i < cvDTO.getWorkExps().size(); i++) {
             WorkExp workExp = new WorkExp();
             WorkExp workExp1 = workExp.toEntity(cvDTO.getWorkExps().get(i));
-            Optional<WorkExp> workExpOptional = workExpService.findById(workExp1.getId());
-            workExpOptional.get().setCv(cv.get());
-            workExpOptional.get().setTitle(workExp1.getTitle());
-            workExpOptional.get().setContent(workExp1.getContent());
-            workExpOptional.get().setStartDate(workExp1.getStartDate());
-            workExpOptional.get().setEndDate(workExp1.getEndDate());
-            workExpService.save(workExpOptional.get());
-            workExps.add(workExpOptional.get());
+            if (!workExpService.existsByCv_Id(workExp1.getCv().getId())) {
+                workExp1.setCv(cv.get());
+                workExpService.save(workExp1);
+                workExps.add(workExp1);
+            } else {
+                Optional<WorkExp> workExpOptional = workExpService.findById(workExp1.getId());
+                workExpOptional.get().setCv(cv.get());
+                workExpOptional.get().setTitle(workExp1.getTitle());
+                workExpOptional.get().setContent(workExp1.getContent());
+                workExpOptional.get().setStartDate(workExp1.getStartDate());
+                workExpOptional.get().setEndDate(workExp1.getEndDate());
+                workExpService.save(workExpOptional.get());
+                workExps.add(workExpOptional.get());
+            }
         }
         cv.get().setSkills(skills);
         cv.get().setWorkExps(workExps);
