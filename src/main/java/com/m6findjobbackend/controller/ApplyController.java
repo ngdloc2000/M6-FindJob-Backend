@@ -120,11 +120,11 @@ public class ApplyController {
         }
         if(changeStatusApply.getStatus() == 1){
             if(check){
-                return new ResponseEntity<>(new ResponseMessage("NHân viễn đã được apcept bởi công ty khác"), HttpStatus.OK);
+                return new ResponseEntity<>(new ResponseMessage("Nhân viên đã được apcept bởi công ty khác"), HttpStatus.OK);
             }
             apply.setStatus(Status.APCEPT);
             applyService.save(apply);
-            return new ResponseEntity<>(new ResponseMessage("NHân viễn đã được apcept thành công"), HttpStatus.OK);
+            return new ResponseEntity<>(new ResponseMessage("Nhân viên đã được apcept thành công"), HttpStatus.OK);
 
         }
         if(changeStatusApply.getStatus() == 0){
